@@ -1,0 +1,156 @@
+name: ${COMPOSE_PROJECT_NAME:-ai-marriage}
+
+x-service-defaults: &service-defaults
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: "3"
+
+services:
+  postgres:
+    <<: *service-defaults
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ai_marriage}
+      POSTGRES_USER: ${POSTGRES_USER:-ai_marriage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the deployment env file}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    stop_grace_period: 30s
+    networks:
+      - backend
+
+  migrate:
+    build:
+      context: ..
+      target: migrate
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL with the internal postgres service hostname}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    networks:
+      - backend
+
+  api:
+    <<: *service-defaults
+    build:
+      context: ..
+      target: api
+    environment:
+      NODE_ENV: production
+      API_PORT: 4184
+      DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL with the internal postgres service hostname}
+      APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY:?Set APP_ENCRYPTION_KEY to a unique value of at least 32 characters}
+      CORS_ALLOWED_ORIGINS: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN to the external HTTPS origin}
+      TRUST_PROXY: "true"
+      ADMIN_PHONES: ${ADMIN_PHONES:-}
+      ADMIN_ACCESS_CODE: ${ADMIN_ACCESS_CODE:?Set ADMIN_ACCESS_CODE to a value different from the OTP code}
+      OTP_TTL_SECONDS: ${OTP_TTL_SECONDS:-300}
+      SMS_PROVIDER: ${SMS_PROVIDER:?Set SMS_PROVIDER=http}
+      SMS_WEBHOOK_URL: ${SMS_WEBHOOK_URL:?Set the production SMS webhook URL}
+      SMS_BEARER_TOKEN: ${SMS_BEARER_TOKEN:-}
+      OBJECT_STORAGE_PROVIDER: ${OBJECT_STORAGE_PROVIDER:?Set OBJECT_STORAGE_PROVIDER=s3}
+      S3_ENDPOINT: ${S3_ENDPOINT:-}
+      S3_REGION: ${S3_REGION:?Set the object storage region}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:?Set the object storage access key}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:?Set the object storage secret key}
+      S3_BUCKET: ${S3_BUCKET:?Set the photo bucket}
+      S3_PUBLIC_BASE_URL: ${S3_PUBLIC_BASE_URL:?Set the browser-accessible photo URL}
+      S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE:-false}
+      AVATAR_MODEL_PROVIDER: ${AVATAR_MODEL_PROVIDER:?Set AVATAR_MODEL_PROVIDER=openai}
+      AVATAR_MODEL_ENDPOINT: ${AVATAR_MODEL_ENDPOINT:?Set the OpenAI-compatible chat-completions endpoint}
+      AVATAR_MODEL_API_KEY: ${AVATAR_MODEL_API_KEY:?Set the avatar model API key}
+      AVATAR_MODEL_NAME: ${AVATAR_MODEL_NAME:?Set the avatar model name}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    networks:
+      - backend
+      - egress
+
+  web:
+    <<: *service-defaults
+    build:
+      context: ..
+      target: web
+      args:
+        VITE_API_URL: ""
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    networks:
+      - frontend
+
+  gateway:
+    <<: *service-defaults
+    build:
+      context: ..
+      target: gateway
+    environment:
+      TRUSTED_PROXY_CIDR: ${TRUSTED_PROXY_CIDR:?Set TRUSTED_PROXY_CIDR to the external TLS proxy network, or 127.0.0.1/32 for direct access}
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    ports:
+      - "${APP_HTTP_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    networks:
+      - frontend
+      - backend
+
+volumes:
+  postgres-data:
+
+networks:
+  frontend:
+  egress:
+  backend:
+    internal: true

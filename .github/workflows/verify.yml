@@ -1,0 +1,43 @@
+name: Verify
+
+on:
+  push:
+    branches: [main, "codex/**"]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DATABASE_URL: postgresql://ai_marriage:ai_marriage_demo_password@127.0.0.1:5432/ai_marriage?schema=public
+      PERSISTENCE_DATABASE_URL: postgresql://ai_marriage:ai_marriage_demo_password@127.0.0.1:5432/ai_marriage
+      PERSISTENCE_S3_ENDPOINT: http://127.0.0.1:9000
+      PERSISTENCE_S3_ACCESS_KEY: minioadmin
+      PERSISTENCE_S3_SECRET_KEY: minioadmin_demo_password
+      PERSISTENCE_S3_BUCKET: ai-marriage-local
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - name: Start real PostgreSQL and MinIO
+        run: |
+          docker compose -f compose.demo.yml up -d --wait postgres minio
+          docker compose -f compose.demo.yml run --rm minio-init
+      - name: Deploy all Prisma migrations
+        run: npm exec prisma -- migrate deploy --schema prisma/schema.prisma
+      - name: Reject Prisma schema drift
+        run: >-
+          npm exec prisma -- migrate diff
+          --from-url "$DATABASE_URL"
+          --to-schema-datamodel prisma/schema.prisma
+          --exit-code
+      - name: Verify persistence across API restarts
+        run: npm run verify:integration:ci
+      - name: Stop integration infrastructure
+        if: always()
+        run: docker compose -f compose.demo.yml down -v --remove-orphans

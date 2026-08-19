@@ -1,0 +1,950 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  ACTIVE    @map("active")
+  SUSPENDED @map("suspended")
+  DELETED   @map("deleted")
+
+  @@map("user_status")
+}
+
+enum SuspensionSource {
+  SELF  @map("self")
+  ADMIN @map("admin")
+
+  @@map("suspension_source")
+}
+
+enum UserRole {
+  USER      @map("user")
+  MODERATOR @map("moderator")
+  ADMIN     @map("admin")
+
+  @@map("user_role")
+}
+
+enum OtpPurpose {
+  LOGIN    @map("login")
+  REGISTER @map("register")
+
+  @@map("otp_purpose")
+}
+
+enum Gender {
+  MALE   @map("male")
+  FEMALE @map("female")
+
+  @@map("gender")
+}
+
+enum MaritalStatus {
+  SINGLE   @map("single")
+  DIVORCED @map("divorced")
+  WIDOWED  @map("widowed")
+
+  @@map("marital_status")
+}
+
+enum RelationshipGoal {
+  SERIOUS_DATING @map("serious_dating")
+  MARRIAGE       @map("marriage")
+  GET_TO_KNOW    @map("get_to_know")
+
+  @@map("relationship_goal")
+}
+
+enum ProfileStatus {
+  DRAFT          @map("draft")
+  PENDING_REVIEW @map("pending_review")
+  APPROVED       @map("approved")
+  REJECTED       @map("rejected")
+
+  @@map("profile_status")
+}
+
+enum ProfileVisibility {
+  PRIVATE       @map("private")
+  APPROVED_ONLY @map("approved_only")
+  PUBLIC        @map("public")
+
+  @@map("profile_visibility")
+}
+
+enum OnboardingDraftStatus {
+  IN_PROGRESS @map("in_progress")
+  SUBMITTED   @map("submitted")
+
+  @@map("onboarding_draft_status")
+}
+
+enum AiConsentStatus {
+  PENDING @map("pending")
+  ENABLED @map("enabled")
+  PAUSED  @map("paused")
+  REVOKED @map("revoked")
+
+  @@map("ai_consent_status")
+}
+
+enum PhotoReviewStatus {
+  PENDING  @map("pending")
+  APPROVED @map("approved")
+  REJECTED @map("rejected")
+
+  @@map("photo_review_status")
+}
+
+enum InterestStatus {
+  ACTIVE  @map("active")
+  REMOVED @map("removed")
+
+  @@map("interest_status")
+}
+
+enum AvatarConversationStatus {
+  ACTIVE    @map("active")
+  COMPLETED @map("completed")
+  BLOCKED   @map("blocked")
+
+  @@map("avatar_conversation_status")
+}
+
+enum AvatarMessageSender {
+  USER   @map("user")
+  AVATAR @map("avatar")
+  SYSTEM @map("system")
+
+  @@map("avatar_message_sender")
+}
+
+enum AvatarReplyFailureStatus {
+  PENDING  @map("pending")
+  RESOLVED @map("resolved")
+
+  @@map("avatar_reply_failure_status")
+}
+
+enum MessageModerationStatus {
+  PENDING  @map("pending")
+  APPROVED @map("approved")
+  REJECTED @map("rejected")
+
+  @@map("message_moderation_status")
+}
+
+enum ChatRequestStatus {
+  AI_LEARNING @map("ai_learning")
+  READY       @map("ready")
+  PENDING     @map("pending")
+  ACCEPTED    @map("accepted")
+  REJECTED    @map("rejected")
+  EXPIRED     @map("expired")
+  BLOCKED     @map("blocked")
+
+  @@map("chat_request_status")
+}
+
+enum ConversationStatus {
+  ACTIVE   @map("active")
+  ARCHIVED @map("archived")
+  BLOCKED  @map("blocked")
+
+  @@map("conversation_status")
+}
+
+enum MessageType {
+  TEXT   @map("text")
+  SYSTEM @map("system")
+
+  @@map("message_type")
+}
+
+enum NotificationType {
+  PHOTO_REVIEWED        @map("photo_reviewed")
+  PROFILE_REVIEWED      @map("profile_reviewed")
+  CHAT_REQUEST_RECEIVED @map("chat_request_received")
+  CHAT_REQUEST_ACCEPTED @map("chat_request_accepted")
+  CHAT_REQUEST_REJECTED @map("chat_request_rejected")
+  NEW_MESSAGE           @map("new_message")
+  SYSTEM                @map("system")
+
+  @@map("notification_type")
+}
+
+enum ModerationTargetType {
+  PHOTO   @map("photo")
+  PROFILE @map("profile")
+  MESSAGE @map("message")
+  USER    @map("user")
+
+  @@map("moderation_target_type")
+}
+
+enum ModerationTaskStatus {
+  PENDING   @map("pending")
+  APPROVED  @map("approved")
+  REJECTED  @map("rejected")
+  ESCALATED @map("escalated")
+
+  @@map("moderation_task_status")
+}
+
+enum ReportStatus {
+  PENDING   @map("pending")
+  RESOLVED  @map("resolved")
+  DISMISSED @map("dismissed")
+
+  @@map("report_status")
+}
+
+enum AppealStatus {
+  PENDING  @map("pending")
+  REVIEWING @map("reviewing")
+  APPROVED @map("approved")
+  REJECTED @map("rejected")
+
+  @@map("appeal_status")
+}
+
+enum DataExportStatus {
+  PENDING   @map("pending")
+  READY     @map("ready")
+  FAILED    @map("failed")
+  EXPIRED   @map("expired")
+
+  @@map("data_export_status")
+}
+
+enum ContentType {
+  POST    @map("post")
+  EVENT   @map("event")
+  STORY   @map("story")
+  LESSON  @map("lesson")
+
+  @@map("content_type")
+}
+
+enum ContentStatus {
+  DRAFT     @map("draft")
+  PUBLISHED @map("published")
+  OFFLINE   @map("offline")
+
+  @@map("content_status")
+}
+
+enum RegistrationStatus {
+  REGISTERED @map("registered")
+  CANCELLED  @map("cancelled")
+
+  @@map("registration_status")
+}
+
+enum OutboxStatus {
+  PENDING    @map("pending")
+  PROCESSING @map("processing")
+  PROCESSED  @map("processed")
+  FAILED     @map("failed")
+
+  @@map("outbox_status")
+}
+
+enum MaintenanceStatus {
+  RUNNING   @map("running")
+  SUCCEEDED @map("succeeded")
+  FAILED    @map("failed")
+
+  @@map("maintenance_status")
+}
+
+enum KnowledgeGovernanceStatus {
+  ALLOWED    @map("allowed")
+  SENSITIVE  @map("sensitive")
+  PROHIBITED @map("prohibited")
+
+  @@map("knowledge_governance_status")
+}
+
+enum AvatarProfileVersionStatus {
+  DRAFT    @map("draft")
+  ACTIVE   @map("active")
+  STALE    @map("stale")
+  ARCHIVED @map("archived")
+
+  @@map("avatar_profile_version_status")
+}
+
+model User {
+  id             String     @id @default(uuid()) @db.Uuid
+  phoneHash      String     @unique @map("phone_hash") @db.VarChar(128)
+  phoneEncrypted String?    @map("phone_encrypted") @db.Text
+  status         UserStatus @default(ACTIVE)
+  suspensionSource SuspensionSource? @map("suspension_source")
+  role           UserRole   @default(USER)
+  phoneVerified  Boolean    @default(false) @map("phone_verified")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  lastLoginAt    DateTime?  @map("last_login_at")
+  deletionRequestedAt DateTime? @map("deletion_requested_at")
+  deletionScheduledAt DateTime? @map("deletion_scheduled_at")
+
+  sessions                  Session[]
+  otpRequests               OtpRequest[]
+  profile                   Profile?
+  onboardingDraft           OnboardingDraft?
+  photos                    Photo[]
+  sentInterests             Interest[]           @relation("InterestFrom")
+  receivedInterests         Interest[]           @relation("InterestTo")
+  avatarConversations       AvatarConversation[] @relation("AvatarConversationUser")
+  targetAvatarConversations AvatarConversation[] @relation("AvatarConversationTarget")
+  sentChatRequests          ChatRequest[]        @relation("ChatRequestRequester")
+  receivedChatRequests      ChatRequest[]        @relation("ChatRequestTarget")
+  conversationsAsUserA      Conversation[]       @relation("ConversationUserA")
+  conversationsAsUserB      Conversation[]       @relation("ConversationUserB")
+  sentMessages              Message[]            @relation("MessageSender")
+  notifications             Notification[]
+  reviewedPhotos            Photo[]              @relation("PhotoReviewer")
+  targetModerationTasks     ModerationTask[]     @relation("ModerationTargetUser")
+  assignedModerationTasks   ModerationTask[]     @relation("ModerationAssignedTo")
+  decidedModerationTasks    ModerationTask[]     @relation("ModerationDecidedBy")
+  submittedReports          Report[]             @relation("ReportReporter")
+  receivedReports           Report[]             @relation("ReportTarget")
+  resolvedReports           Report[]             @relation("ReportResolver")
+  blocksCreated             Block[]              @relation("BlockBlocker")
+  blocksReceived            Block[]              @relation("BlockBlocked")
+
+  @@index([status, createdAt])
+  @@map("users")
+}
+
+model Session {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           String    @map("user_id") @db.Uuid
+  refreshTokenHash String    @unique @map("refresh_token_hash") @db.VarChar(128)
+  userAgent        String?   @map("user_agent") @db.VarChar(512)
+  ipHash           String?   @map("ip_hash") @db.VarChar(128)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  lastUsedAt       DateTime? @map("last_used_at")
+  expiresAt        DateTime  @map("expires_at")
+  revokedAt        DateTime? @map("revoked_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt, expiresAt])
+  @@map("sessions")
+}
+
+model OtpRequest {
+  id        String     @id @default(uuid()) @db.Uuid
+  userId    String?    @map("user_id") @db.Uuid
+  phoneHash String     @map("phone_hash") @db.VarChar(128)
+  codeHash  String     @map("code_hash") @db.VarChar(128)
+  purpose   OtpPurpose
+  attempts  Int        @default(0)
+  expiresAt DateTime   @map("expires_at")
+  usedAt    DateTime?  @map("used_at")
+  ipHash    String?    @map("ip_hash") @db.VarChar(128)
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([phoneHash, purpose, createdAt])
+  @@index([expiresAt, usedAt])
+  @@map("otp_requests")
+}
+
+model OnboardingDraft {
+  id             String                @id @default(uuid()) @db.Uuid
+  userId         String                @unique @map("user_id") @db.Uuid
+  currentStep    Int                   @default(1) @map("current_step")
+  status         OnboardingDraftStatus @default(IN_PROGRESS)
+  dataCiphertext String                @map("data_ciphertext") @db.Text
+  createdAt      DateTime              @default(now()) @map("created_at")
+  updatedAt      DateTime              @updatedAt @map("updated_at")
+  completedAt    DateTime?             @map("completed_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, updatedAt])
+  @@map("onboarding_drafts")
+}
+
+model Profile {
+  id                          String                 @id @default(uuid()) @db.Uuid
+  userId                      String                 @unique @map("user_id") @db.Uuid
+  nickname                    String                 @db.VarChar(40)
+  gender                      Gender
+  birthYear                   Int                    @map("birth_year")
+  city                        String                 @db.VarChar(80)
+  district                    String?                @db.VarChar(80)
+  jobCategory                 String?                @map("job_category") @db.VarChar(80)
+  maritalStatus               MaritalStatus          @map("marital_status")
+  goal                        RelationshipGoal
+  introduction                String?                @db.VarChar(1000)
+  tags                        String[]               @default([])
+  preference                  Json?
+  profileStatus               ProfileStatus          @default(DRAFT) @map("profile_status")
+  visibility                  ProfileVisibility      @default(APPROVED_ONLY)
+  reviewReason                String?                @map("review_reason") @db.VarChar(1000)
+  onboardingDraftStatus       OnboardingDraftStatus? @map("onboarding_draft_status")
+  onboardingCurrentStep       Int?                   @map("onboarding_current_step")
+  onboardingDraft             Json?                  @map("onboarding_draft")
+  onboardingAnswersCiphertext String?                @map("onboarding_answers_ciphertext") @db.Text
+  onboardingAnswersVersion    Int?                   @map("onboarding_answers_version")
+  onboardingCompletedAt       DateTime?              @map("onboarding_completed_at")
+  aiProfileVersion            Int                    @default(0) @map("ai_profile_version")
+  aiProfileSummary            Json?                  @map("ai_profile_summary")
+  aiForbiddenTopics           Json?                  @map("ai_forbidden_topics")
+  aiConsentStatus             AiConsentStatus        @default(PENDING) @map("ai_consent_status")
+  aiGeneratedAt               DateTime?              @map("ai_generated_at")
+  aiApprovedAt                DateTime?              @map("ai_approved_at")
+  createdAt                   DateTime               @default(now()) @map("created_at")
+  updatedAt                   DateTime               @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moderationTasks ModerationTask[]
+  avatarVersions  AvatarProfileVersion[]
+  avatarKnowledge AvatarKnowledgeItem[]
+
+  @@index([profileStatus, visibility, city])
+  @@index([gender, birthYear, maritalStatus, goal])
+  @@map("profiles")
+}
+
+model Photo {
+  id               String            @id @default(uuid()) @db.Uuid
+  userId           String            @map("user_id") @db.Uuid
+  objectKey        String            @unique @map("object_key") @db.VarChar(512)
+  url              String?           @db.Text
+  mimeType         String            @map("mime_type") @db.VarChar(80)
+  sizeBytes        Int               @map("size_bytes")
+  width            Int?
+  height           Int?
+  isPrimary        Boolean           @default(false) @map("is_primary")
+  reviewStatus     PhotoReviewStatus @default(PENDING) @map("review_status")
+  reviewReason     String?           @map("review_reason") @db.VarChar(500)
+  reviewedByUserId String?           @map("reviewed_by_user_id") @db.Uuid
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  uploadedAt       DateTime?         @map("uploaded_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewedBy      User?            @relation("PhotoReviewer", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  moderationTasks ModerationTask[]
+
+  @@index([userId, reviewStatus, isPrimary])
+  @@map("photos")
+}
+
+model Interest {
+  id         String         @id @default(uuid()) @db.Uuid
+  fromUserId String         @map("from_user_id") @db.Uuid
+  toUserId   String         @map("to_user_id") @db.Uuid
+  status     InterestStatus @default(ACTIVE)
+  createdAt  DateTime       @default(now()) @map("created_at")
+  updatedAt  DateTime       @updatedAt @map("updated_at")
+
+  fromUser    User         @relation("InterestFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser      User         @relation("InterestTo", fields: [toUserId], references: [id], onDelete: Cascade)
+  chatRequest ChatRequest?
+
+  @@unique([fromUserId, toUserId])
+  @@index([toUserId, status, createdAt])
+  @@map("interests")
+}
+
+model AvatarConversation {
+  id              String                   @id @default(uuid()) @db.Uuid
+  userId          String                   @map("user_id") @db.Uuid
+  targetUserId    String                   @map("target_user_id") @db.Uuid
+  status          AvatarConversationStatus @default(ACTIVE)
+  completedTopics Json?                    @map("completed_topics")
+  startedAt       DateTime                 @default(now()) @map("started_at")
+  lastMessageAt   DateTime?                @map("last_message_at")
+  createdAt       DateTime                 @default(now()) @map("created_at")
+  updatedAt       DateTime                 @updatedAt @map("updated_at")
+
+  user         User            @relation("AvatarConversationUser", fields: [userId], references: [id], onDelete: Cascade)
+  targetUser   User            @relation("AvatarConversationTarget", fields: [targetUserId], references: [id], onDelete: Cascade)
+  messages     AvatarMessage[]
+  replyFailureTasks AvatarReplyFailureTask[]
+  chatRequests ChatRequest[]
+
+  @@index([userId, targetUserId, createdAt])
+  @@index([userId, status, lastMessageAt])
+  @@map("avatar_conversations")
+}
+
+model AvatarMessage {
+  id                String                  @id @default(uuid()) @db.Uuid
+  conversationId    String                  @map("conversation_id") @db.Uuid
+  senderType        AvatarMessageSender     @map("sender_type")
+  contentCiphertext String                  @map("content_ciphertext") @db.Text
+  clientMessageId   String?                 @map("client_message_id") @db.VarChar(120)
+  modelName         String?                 @map("model_name") @db.VarChar(120)
+  promptVersion     String?                 @map("prompt_version") @db.VarChar(80)
+  moderationStatus  MessageModerationStatus @default(PENDING) @map("moderation_status")
+  safetyReason      String?                 @map("safety_reason") @db.VarChar(500)
+  latencyMs         Int?                    @map("latency_ms")
+  createdAt         DateTime                @default(now()) @map("created_at")
+
+  conversation AvatarConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  replyFailureAsUser AvatarReplyFailureTask? @relation("AvatarReplyFailureUserMessage")
+  replyFailureAsResolution AvatarReplyFailureTask? @relation("AvatarReplyFailureResolvedMessage")
+
+  @@unique([conversationId, clientMessageId, senderType], map: "avatar_messages_conversation_id_client_message_id_sender_type_k")
+  @@index([conversationId, createdAt])
+  @@map("avatar_messages")
+}
+
+model AvatarReplyFailureTask {
+  id                String                   @id @default(uuid()) @db.Uuid
+  sessionId         String                   @map("session_id") @db.Uuid
+  userMessageId     String                   @unique @map("user_message_id") @db.Uuid
+  memberId          String                   @map("member_id") @db.VarChar(120)
+  status            AvatarReplyFailureStatus @default(PENDING)
+  attempts          Int                      @default(1)
+  lastError         String?                  @map("last_error") @db.VarChar(200)
+  resolvedMessageId String?                  @unique @map("resolved_message_id") @db.Uuid
+  createdAt         DateTime                 @default(now()) @map("created_at")
+  updatedAt         DateTime                 @updatedAt @map("updated_at")
+  resolvedAt        DateTime?                @map("resolved_at")
+
+  session         AvatarConversation @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userMessage     AvatarMessage      @relation("AvatarReplyFailureUserMessage", fields: [userMessageId], references: [id], onDelete: Cascade)
+  resolvedMessage AvatarMessage?     @relation("AvatarReplyFailureResolvedMessage", fields: [resolvedMessageId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([sessionId, createdAt])
+  @@map("avatar_reply_failure_tasks")
+}
+
+model ChatRequest {
+  id                         String            @id @default(uuid()) @db.Uuid
+  requesterId                String            @map("requester_id") @db.Uuid
+  targetUserId               String            @map("target_user_id") @db.Uuid
+  interestId                 String?           @unique @map("interest_id") @db.Uuid
+  sourceAvatarConversationId String?           @map("source_avatar_conversation_id") @db.Uuid
+  status                     ChatRequestStatus @default(AI_LEARNING)
+  compatibilityScore         Int?              @map("compatibility_score")
+  compatibilitySummary       Json?             @map("compatibility_summary")
+  readinessReason            String?           @map("readiness_reason") @db.VarChar(500)
+  lastEvaluatedAt            DateTime?         @map("last_evaluated_at")
+  expiresAt                  DateTime?         @map("expires_at")
+  respondedAt                DateTime?         @map("responded_at")
+  createdAt                  DateTime          @default(now()) @map("created_at")
+  updatedAt                  DateTime          @updatedAt @map("updated_at")
+
+  requester                User                @relation("ChatRequestRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  targetUser               User                @relation("ChatRequestTarget", fields: [targetUserId], references: [id], onDelete: Cascade)
+  interest                 Interest?           @relation(fields: [interestId], references: [id], onDelete: SetNull)
+  sourceAvatarConversation AvatarConversation? @relation(fields: [sourceAvatarConversationId], references: [id], onDelete: SetNull)
+  conversation             Conversation?
+
+  @@unique([requesterId, targetUserId])
+  @@index([targetUserId, status, createdAt])
+  @@map("chat_requests")
+}
+
+model Conversation {
+  id            String             @id @default(uuid()) @db.Uuid
+  chatRequestId String?            @unique @map("chat_request_id") @db.Uuid
+  userAId       String             @map("user_a_id") @db.Uuid
+  userBId       String             @map("user_b_id") @db.Uuid
+  status        ConversationStatus @default(ACTIVE)
+  startedAt     DateTime           @default(now()) @map("started_at")
+  archivedAt    DateTime?          @map("archived_at")
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+
+  chatRequest ChatRequest? @relation(fields: [chatRequestId], references: [id], onDelete: SetNull)
+  userA       User         @relation("ConversationUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB       User         @relation("ConversationUserB", fields: [userBId], references: [id], onDelete: Cascade)
+  messages    Message[]
+
+  @@unique([userAId, userBId])
+  @@index([userAId, status, updatedAt])
+  @@index([userBId, status, updatedAt])
+  @@map("conversations")
+}
+
+model Message {
+  id                String                  @id @default(uuid()) @db.Uuid
+  conversationId    String                  @map("conversation_id") @db.Uuid
+  senderId          String?                 @map("sender_id") @db.Uuid
+  type              MessageType             @default(TEXT)
+  contentCiphertext String                  @map("content_ciphertext") @db.Text
+  moderationStatus  MessageModerationStatus @default(PENDING) @map("moderation_status")
+  moderationReason  String?                 @map("moderation_reason") @db.VarChar(500)
+  clientMessageId   String?                 @map("client_message_id") @db.VarChar(100)
+  sentAt            DateTime                @default(now()) @map("sent_at")
+  editedAt          DateTime?               @map("edited_at")
+  deletedAt         DateTime?               @map("deleted_at")
+  createdAt         DateTime                @default(now()) @map("created_at")
+
+  conversation    Conversation     @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender          User?            @relation("MessageSender", fields: [senderId], references: [id], onDelete: SetNull)
+  moderationTasks ModerationTask[]
+  receipts        MessageReceipt[]
+
+  @@unique([conversationId, senderId, clientMessageId])
+  @@index([conversationId, sentAt])
+  @@index([senderId, createdAt])
+  @@map("messages")
+}
+
+model Notification {
+  id                  String           @id @default(uuid()) @db.Uuid
+  userId              String           @map("user_id") @db.Uuid
+  type                NotificationType
+  title               String           @db.VarChar(120)
+  body                String           @db.VarChar(500)
+  relatedResourceType String?          @map("related_resource_type") @db.VarChar(40)
+  relatedResourceId   String?          @map("related_resource_id") @db.Uuid
+  readAt              DateTime?        @map("read_at")
+  createdAt           DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@map("notifications")
+}
+
+model ModerationTask {
+  id               String               @id @default(uuid()) @db.Uuid
+  targetType       ModerationTargetType @map("target_type")
+  targetPhotoId    String?              @map("target_photo_id") @db.Uuid
+  targetProfileId  String?              @map("target_profile_id") @db.Uuid
+  targetMessageId  String?              @map("target_message_id") @db.Uuid
+  targetUserId     String?              @map("target_user_id") @db.Uuid
+  status           ModerationTaskStatus @default(PENDING)
+  priority         Int                  @default(0)
+  assignedToUserId String?              @map("assigned_to_user_id") @db.Uuid
+  decidedByUserId  String?              @map("decided_by_user_id") @db.Uuid
+  decisionReason   String?              @map("decision_reason") @db.VarChar(1000)
+  resultMetadata   Json?                @map("result_metadata")
+  createdAt        DateTime             @default(now()) @map("created_at")
+  updatedAt        DateTime             @updatedAt @map("updated_at")
+  resolvedAt       DateTime?            @map("resolved_at")
+
+  targetPhoto   Photo?   @relation(fields: [targetPhotoId], references: [id], onDelete: Cascade)
+  targetProfile Profile? @relation(fields: [targetProfileId], references: [id], onDelete: Cascade)
+  targetMessage Message? @relation(fields: [targetMessageId], references: [id], onDelete: Cascade)
+  targetUser    User?    @relation("ModerationTargetUser", fields: [targetUserId], references: [id], onDelete: Cascade)
+  assignedTo    User?    @relation("ModerationAssignedTo", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  decidedBy     User?    @relation("ModerationDecidedBy", fields: [decidedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([status, priority, createdAt])
+  @@index([targetType, status, createdAt])
+  @@map("moderation_tasks")
+}
+
+model Report {
+  id               String       @id @default(uuid()) @db.Uuid
+  reporterUserId   String       @map("reporter_user_id") @db.Uuid
+  targetUserId     String       @map("target_user_id") @db.Uuid
+  targetMessageId  String?      @map("target_message_id") @db.Uuid
+  targetConversationId String?  @map("target_conversation_id") @db.Uuid
+  targetAvatarConversationId String? @map("target_avatar_conversation_id") @db.Uuid
+  reason           String       @db.VarChar(120)
+  description      String       @db.VarChar(1000)
+  status           ReportStatus @default(PENDING)
+  resolution       String?      @db.VarChar(1000)
+  resolvedByUserId String?      @map("resolved_by_user_id") @db.Uuid
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+
+  reporter   User  @relation("ReportReporter", fields: [reporterUserId], references: [id], onDelete: Cascade)
+  target     User  @relation("ReportTarget", fields: [targetUserId], references: [id], onDelete: Cascade)
+  resolvedBy User? @relation("ReportResolver", fields: [resolvedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([targetUserId, status, createdAt])
+  @@map("reports")
+}
+
+model Block {
+  id            String   @id @default(uuid()) @db.Uuid
+  blockerUserId String   @map("blocker_user_id") @db.Uuid
+  blockedUserId String   @map("blocked_user_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  blocker User @relation("BlockBlocker", fields: [blockerUserId], references: [id], onDelete: Cascade)
+  blocked User @relation("BlockBlocked", fields: [blockedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerUserId, blockedUserId])
+  @@index([blockedUserId, createdAt])
+  @@map("blocks")
+}
+
+model LoginEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  sessionId String?  @map("session_id") @db.Uuid
+  success   Boolean  @default(true)
+  ipHash    String?  @map("ip_hash") @db.VarChar(128)
+  userAgent String?  @map("user_agent") @db.VarChar(512)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@map("login_events")
+}
+
+model AccountAppeal {
+  id             String       @id @default(uuid()) @db.Uuid
+  userId         String       @map("user_id") @db.Uuid
+  reason         String       @db.VarChar(1000)
+  evidence       Json?
+  status         AppealStatus @default(PENDING)
+  resolution     String?      @db.VarChar(1000)
+  resolvedByUserId String?    @map("resolved_by_user_id") @db.Uuid
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  resolvedAt     DateTime?    @map("resolved_at")
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@map("account_appeals")
+}
+
+model DataExportJob {
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @map("user_id") @db.Uuid
+  status      DataExportStatus @default(PENDING)
+  objectKey   String?          @map("object_key") @db.VarChar(512)
+  downloadUrl String?          @map("download_url") @db.Text
+  payloadCiphertext String?    @map("payload_ciphertext") @db.Text
+  error       String?          @db.VarChar(1000)
+  createdAt   DateTime         @default(now()) @map("created_at")
+  readyAt     DateTime?        @map("ready_at")
+  expiresAt   DateTime?        @map("expires_at")
+
+  @@index([userId, createdAt])
+  @@index([status, expiresAt])
+  @@map("data_export_jobs")
+}
+
+model SavedMatchFilter {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  name      String   @db.VarChar(80)
+  criteria  Json
+  isDefault Boolean  @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId, updatedAt])
+  @@map("saved_match_filters")
+}
+
+model MatchSkip {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  targetUserId String   @map("target_user_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, targetUserId])
+  @@index([userId, createdAt])
+  @@map("match_skips")
+}
+
+model MatchSnapshot {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  targetUserId     String   @map("target_user_id") @db.Uuid
+  algorithmVersion String   @map("algorithm_version") @db.VarChar(80)
+  score            Int
+  reasons          Json
+  factors          Json?
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([userId, score, createdAt])
+  @@index([targetUserId, createdAt])
+  @@map("match_snapshots")
+}
+
+model AvatarKnowledgeItem {
+  id               String                    @id @default(uuid()) @db.Uuid
+  profileId        String                    @map("profile_id") @db.Uuid
+  title            String                    @db.VarChar(120)
+  topic            String                    @db.VarChar(120)
+  content          String                    @db.VarChar(2000)
+  keywords         String[]                  @default([])
+  governanceStatus KnowledgeGovernanceStatus @default(ALLOWED) @map("governance_status")
+  moderationReason String?                   @map("moderation_reason") @db.VarChar(500)
+  revision         Int                       @default(1)
+  source           String                    @default("manual") @db.VarChar(120)
+  enabled          Boolean                   @default(true)
+  visibility       String                    @default("avatar_only") @db.VarChar(40)
+  createdAt        DateTime                  @default(now()) @map("created_at")
+  updatedAt        DateTime                  @updatedAt @map("updated_at")
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, enabled, updatedAt])
+  @@map("avatar_knowledge_items")
+}
+
+model AvatarProfileVersion {
+  id              String                     @id @default(uuid()) @db.Uuid
+  profileId       String                     @map("profile_id") @db.Uuid
+  version         Int
+  status          AvatarProfileVersionStatus @default(DRAFT)
+  note            String?                    @db.VarChar(500)
+  summary         Json
+  forbiddenTopics Json?                      @map("forbidden_topics")
+  promptVersion   String                     @map("prompt_version") @db.VarChar(80)
+  activatedAt     DateTime?                  @map("activated_at")
+  createdAt       DateTime                   @default(now()) @map("created_at")
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, version])
+  @@index([profileId, createdAt])
+  @@map("avatar_profile_versions")
+}
+
+model ModelCallLog {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String?  @map("user_id") @db.Uuid
+  avatarConversationId String? @map("avatar_conversation_id") @db.Uuid
+  provider        String   @db.VarChar(80)
+  modelName       String   @map("model_name") @db.VarChar(120)
+  promptVersion   String   @map("prompt_version") @db.VarChar(80)
+  status          String   @db.VarChar(40)
+  latencyMs       Int?     @map("latency_ms")
+  inputTokens     Int?     @map("input_tokens")
+  outputTokens    Int?     @map("output_tokens")
+  error           String?  @db.VarChar(1000)
+  metadata        Json?
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@map("model_call_logs")
+}
+
+model MessageReceipt {
+  id        String   @id @default(uuid()) @db.Uuid
+  messageId String   @map("message_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  deliveredAt DateTime? @map("delivered_at")
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+  @@index([userId, readAt, createdAt])
+  @@map("message_receipts")
+}
+
+model OutboxEvent {
+  id          String       @id @default(uuid()) @db.Uuid
+  aggregateType String     @map("aggregate_type") @db.VarChar(80)
+  aggregateId String       @map("aggregate_id") @db.VarChar(120)
+  eventType   String       @map("event_type") @db.VarChar(120)
+  payload     Json
+  status      OutboxStatus @default(PENDING)
+  attempts    Int          @default(0)
+  availableAt DateTime     @default(now()) @map("available_at")
+  processedAt DateTime?    @map("processed_at")
+  lastError   String?      @map("last_error") @db.VarChar(1000)
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  @@index([status, availableAt])
+  @@map("outbox_events")
+}
+
+model AdminAuditLog {
+  id          String   @id @default(uuid()) @db.Uuid
+  actorUserId String   @map("actor_user_id") @db.Uuid
+  action      String   @db.VarChar(120)
+  targetType  String   @map("target_type") @db.VarChar(80)
+  targetId    String?  @map("target_id") @db.VarChar(120)
+  reason      String?  @db.VarChar(1000)
+  metadata    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([actorUserId, createdAt])
+  @@index([targetType, targetId, createdAt])
+  @@map("admin_audit_logs")
+}
+
+model ContentItem {
+  id          String        @id @default(uuid()) @db.Uuid
+  type        ContentType
+  status      ContentStatus @default(DRAFT)
+  title       String        @db.VarChar(160)
+  summary     String        @db.VarChar(500)
+  body        String        @db.Text
+  tags        String[]      @default([])
+  coverUrl    String?       @map("cover_url") @db.Text
+  imageUrls   String[]      @default([]) @map("image_urls")
+  location    String?       @db.VarChar(160)
+  eventStartsAt DateTime?   @map("event_starts_at")
+  eventEndsAt DateTime?     @map("event_ends_at")
+  capacity    Int?
+  publishedAt DateTime?     @map("published_at")
+  offlineAt  DateTime?      @map("offline_at")
+  createdByUserId String    @map("created_by_user_id") @db.Uuid
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  likes         ContentLike[]
+  registrations EventRegistration[]
+
+  @@index([type, status, publishedAt])
+  @@map("content_items")
+}
+
+model ContentLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  contentId String   @map("content_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  content ContentItem @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@unique([contentId, userId])
+  @@index([userId, createdAt])
+  @@map("content_likes")
+}
+
+model EventRegistration {
+  id        String             @id @default(uuid()) @db.Uuid
+  contentId String             @map("content_id") @db.Uuid
+  userId    String             @map("user_id") @db.Uuid
+  status    RegistrationStatus @default(REGISTERED)
+  registeredAt DateTime         @default(now()) @map("registered_at")
+  cancelledAt DateTime?         @map("cancelled_at")
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  content ContentItem @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@unique([contentId, userId])
+  @@index([userId, status, createdAt])
+  @@map("event_registrations")
+}
+
+model MaintenanceRun {
+  id          String            @id @default(uuid()) @db.Uuid
+  task        String            @db.VarChar(120)
+  status      MaintenanceStatus @default(RUNNING)
+  triggeredBy String            @map("triggered_by") @db.VarChar(120)
+  result      Json?
+  error       String?           @db.VarChar(1000)
+  startedAt   DateTime          @default(now()) @map("started_at")
+  finishedAt  DateTime?         @map("finished_at")
+
+  @@index([task, startedAt])
+  @@index([status, startedAt])
+  @@map("maintenance_runs")
+}

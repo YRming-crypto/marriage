@@ -1,0 +1,529 @@
+.matchmaking-page {
+  --match-accent: #b93d54;
+  --match-accent-soft: #fff0f2;
+}
+
+.matchmaking-page__header {
+  margin-bottom: var(--space-7);
+}
+
+.matchmaking-page__summary {
+  display: grid;
+  min-width: 136px;
+  padding: var(--space-3) var(--space-5);
+  border-left: 3px solid var(--match-accent);
+  background: var(--color-surface);
+}
+
+.matchmaking-page__summary strong {
+  color: var(--match-accent);
+  font-size: var(--text-2xl);
+}
+
+.matchmaking-page__summary span {
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+}
+
+.matchmaking-interest-spotlight {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid rgba(185, 61, 84, 0.2);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(185, 61, 84, 0.08), rgba(255,255,255,0.98));
+}
+
+.matchmaking-interest-spotlight__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.matchmaking-interest-spotlight__header span {
+  color: var(--match-accent);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.matchmaking-interest-spotlight__header h2 {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-2xl);
+}
+
+.matchmaking-interest-spotlight__card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid rgba(185, 61, 84, 0.15);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.76);
+}
+
+.matchmaking-interest-spotlight__card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.matchmaking-interest-spotlight__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.matchmaking-interest-spotlight__content strong {
+  display: block;
+  font-size: var(--text-lg);
+}
+
+.matchmaking-interest-spotlight__content p {
+  margin: var(--space-1) 0 0;
+  color: var(--color-ink-soft);
+}
+
+.matchmaking-interaction-summary {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid rgba(185, 61, 84, 0.18);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--match-accent-soft), rgba(255,255,255,0.92));
+}
+
+.matchmaking-interaction-summary__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.matchmaking-interaction-summary__item strong {
+  color: var(--color-ink);
+  font-size: var(--text-base);
+}
+
+.matchmaking-tools {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.matchmaking-tools__filters {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(100px, 1fr));
+  gap: var(--space-3);
+}
+
+.matchmaking-tools label {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.matchmaking-tools label > span {
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.matchmaking-tools input,
+.matchmaking-tools select {
+  min-width: 0;
+  height: 44px;
+}
+
+.matchmaking-tools__actions,
+.saved-filter-form,
+.saved-filter-list {
+  display: flex;
+  align-items: end;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.saved-filter-form {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+
+.saved-filter-form label {
+  min-width: min(260px, 100%);
+}
+
+.saved-filter-list {
+  align-items: center;
+}
+
+.saved-filter-list > span {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 3px 5px 3px var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+}
+
+.saved-filter-list button {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-ink-faint);
+  cursor: pointer;
+  place-items: center;
+}
+
+.saved-filter-list button:hover {
+  background: var(--match-accent-soft);
+  color: var(--match-accent);
+}
+
+.saved-filter-list svg {
+  width: 16px;
+  height: 16px;
+}
+
+.matchmaking-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: var(--space-5);
+  border-block: 1px solid var(--color-line-strong);
+}
+
+.matchmaking-tabs button {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.matchmaking-tabs button:hover,
+.matchmaking-tabs button.is-active {
+  border-bottom-color: var(--match-accent);
+  color: var(--match-accent);
+}
+
+.matchmaking-tabs svg {
+  width: 20px;
+  height: 20px;
+}
+
+.matchmaking-tabs strong {
+  display: inline-grid;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 5px;
+  border-radius: 50%;
+  background: var(--color-surface-muted);
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+  place-items: center;
+}
+
+.matchmaking-advisor {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid rgba(185, 61, 84, 0.18);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--match-accent-soft), rgba(255,255,255,0.94));
+}
+
+.matchmaking-advisor__title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--match-accent);
+  font-size: var(--text-base);
+}
+
+.matchmaking-advisor p {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+.matchmaking-advisor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.matchmaking-advisor__actions button {
+  border: 1px solid rgba(185, 61, 84, 0.25);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.8);
+  color: var(--color-ink);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.55rem 0.9rem;
+}
+
+.matchmaking-advisor__actions button:hover {
+  border-color: rgba(185, 61, 84, 0.45);
+  background: var(--match-accent-soft);
+}
+
+.matchmaking-advisor__prompt {
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--match-accent);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.7);
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+}
+
+.matchmaking-feedback {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-green);
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+}
+
+.matchmaking-feedback--error {
+  border-left-color: var(--match-accent);
+  color: var(--match-accent);
+}
+
+.matchmaking-feedback svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.matchmaking-results {
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.matchmaking-load-more {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 0 4px;
+}
+
+.matchmaking-load-more span {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 560px) {
+  .matchmaking-load-more {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .matchmaking-load-more .button {
+    width: 100%;
+  }
+}
+
+.match-card {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.95fr) minmax(260px, 1.15fr) minmax(170px, auto);
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.match-card__member {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.match-card__member img {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.match-card__member span,
+.match-card__member p {
+  color: var(--color-ink-faint);
+  font-size: var(--text-sm);
+}
+
+.match-card__member h2,
+.match-card__member p {
+  margin: 0;
+}
+
+.match-card__member h2 {
+  margin-block: 2px;
+  font-size: var(--text-xl);
+}
+
+.match-card__reasons {
+  padding-left: var(--space-5);
+  border-left: 2px solid var(--match-accent-soft);
+}
+
+.match-card__reasons strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--match-accent);
+}
+
+.match-card__reasons ul {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--color-ink-soft);
+}
+
+.match-card__reasons p {
+  margin: 0;
+  color: var(--color-ink-soft);
+}
+
+.match-card__actions {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: stretch;
+}
+
+.match-card__actions .button {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.match-card__actions .is-liked {
+  color: var(--match-accent);
+}
+
+.matchmaking-inline-empty {
+  display: grid;
+  min-height: 320px;
+  padding: var(--space-8);
+  place-items: center;
+  align-content: center;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.matchmaking-inline-empty svg {
+  margin-bottom: var(--space-3);
+  color: var(--match-accent);
+}
+
+.matchmaking-inline-empty h2 {
+  margin-bottom: var(--space-2);
+}
+
+.matchmaking-inline-empty p {
+  max-width: 520px;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 1100px) {
+  .matchmaking-tools__filters {
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+  }
+
+  .match-card {
+    grid-template-columns: minmax(280px, 1fr) minmax(240px, 1fr);
+  }
+
+  .match-card__actions {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .matchmaking-page__summary {
+    display: none;
+  }
+
+  .matchmaking-tools__filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .saved-filter-form label,
+  .saved-filter-form .button {
+    width: 100%;
+  }
+
+  .matchmaking-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .match-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .match-card__reasons {
+    padding: var(--space-3) 0 0;
+    border-top: 1px solid var(--match-accent-soft);
+    border-left: 0;
+  }
+
+  .match-card__actions {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 440px) {
+  .matchmaking-tools__filters {
+    grid-template-columns: 1fr;
+  }
+
+  .matchmaking-tools__actions .button {
+    width: 100%;
+  }
+
+  .matchmaking-tabs button {
+    min-height: 52px;
+    font-size: var(--text-sm);
+  }
+
+  .match-card__member {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .match-card__member img {
+    width: 72px;
+    height: 72px;
+  }
+}

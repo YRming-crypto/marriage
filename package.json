@@ -1,0 +1,34 @@
+{
+  "name": "ai-marriage-platform",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,api -c magenta,cyan \"npm:dev:web\" \"npm:dev:api\"",
+    "dev:web": "npm run dev --workspace @ai-marriage/web",
+    "dev:api": "npm run dev --workspace @ai-marriage/api",
+    "build": "npm run build --workspace @ai-marriage/shared && npm run build --workspace @ai-marriage/web && npm run build --workspace @ai-marriage/api",
+    "test": "npm run test --workspaces --if-present",
+    "verify": "npm run test && node --test deploy/scripts/backup-restore.contract.test.mjs deploy/scripts/demo-compose.contract.test.mjs deploy/scripts/delivery-infrastructure.contract.test.mjs && npm run build && npm run db:validate",
+    "verify:integration": "npm run build && npm exec prisma -- migrate deploy --schema prisma/schema.prisma && powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/scripts/persistence-smoke.local.ps1",
+    "verify:integration:ci": "pwsh -NoProfile -File deploy/scripts/persistence-smoke.local.ps1",
+    "demo:up": "docker compose -f compose.demo.yml up -d --build",
+    "demo:down": "docker compose -f compose.demo.yml down",
+    "demo:backup": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/scripts/backup.ps1 -EnvFile deploy/demo.env -ComposeFile compose.demo.yml -S3ClientEndpoint http://127.0.0.1:9000",
+    "demo:restore": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/scripts/restore.ps1 -EnvFile deploy/demo.env -ComposeFile compose.demo.yml -S3ClientEndpoint http://127.0.0.1:9000 -ConfirmDatabaseName ai_marriage -ConfirmBucketName ai-marriage-local",
+    "db:generate": "prisma generate --schema prisma/schema.prisma",
+    "db:validate": "prisma validate --schema prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema prisma/schema.prisma",
+    "db:seed": "npm run seed --workspace @ai-marriage/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

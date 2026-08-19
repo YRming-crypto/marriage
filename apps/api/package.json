@@ -1,0 +1,27 @@
+{
+  "name": "@ai-marriage/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "npm run build --workspace @ai-marriage/shared",
+    "dev": "tsx watch src/dev.ts",
+    "build": "tsc -p tsconfig.json",
+    "pretest": "npm run build --workspace @ai-marriage/shared",
+    "test": "vitest run",
+    "seed": "tsx src/database-seed-cli.ts"
+  },
+  "dependencies": {
+    "@ai-marriage/shared": "*",
+    "@aws-sdk/client-s3": "^3.1109.0",
+    "@fastify/cors": "^11.1.0",
+    "@prisma/client": "^6.15.0",
+    "fastify": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "prisma": "^6.15.0",
+    "tsx": "^4.20.5",
+    "vitest": "^3.2.4"
+  }
+}

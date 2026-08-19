@@ -1,0 +1,147 @@
+name: ai-marriage-demo
+
+services:
+  postgres:
+    image: postgres:16.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ai_marriage
+      POSTGRES_USER: ai_marriage
+      POSTGRES_PASSWORD: ai_marriage_demo_password
+    ports:
+      - "127.0.0.1:${DEMO_POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - demo-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ai_marriage -d ai_marriage"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  minio:
+    image: minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin_demo_password
+    ports:
+      - "127.0.0.1:${DEMO_MINIO_API_PORT:-9000}:9000"
+      - "127.0.0.1:${DEMO_MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - demo-minio-data:/data
+
+  minio-init:
+    image: minio/mc@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727
+    depends_on:
+      - minio
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        until mc alias set local http://minio:9000 minioadmin minioadmin_demo_password; do
+          echo "waiting for minio";
+          sleep 2;
+        done;
+        mc mb --ignore-existing local/ai-marriage-local;
+        mc anonymous set none local/ai-marriage-local;
+        echo "demo photo bucket is ready";
+
+  migrate:
+    build:
+      context: .
+      target: migrate
+    environment:
+      DATABASE_URL: postgresql://ai_marriage:ai_marriage_demo_password@postgres:5432/ai_marriage
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  seed:
+    build:
+      context: .
+      target: demo-seed
+    environment: &api-environment
+      NODE_ENV: development
+      API_PORT: 4184
+      DATABASE_URL: postgresql://ai_marriage:ai_marriage_demo_password@postgres:5432/ai_marriage
+      APP_ENCRYPTION_KEY: local-demo-encryption-key-change-before-sharing
+      CORS_ALLOWED_ORIGINS: http://127.0.0.1:${DEMO_HTTP_PORT:-8080},http://localhost:${DEMO_HTTP_PORT:-8080}
+      TRUST_PROXY: "true"
+      ALLOW_DEV_OTP: "true"
+      DEV_OTP_CODE: "123456"
+      ADMIN_ACCESS_CODE: "654321"
+      SMS_PROVIDER: console
+      OBJECT_STORAGE_PROVIDER: s3
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: us-east-1
+      S3_ACCESS_KEY: minioadmin
+      S3_SECRET_KEY: minioadmin_demo_password
+      S3_BUCKET: ai-marriage-local
+      S3_PUBLIC_BASE_URL: http://minio:9000/ai-marriage-local
+      S3_FORCE_PATH_STYLE: "true"
+      AVATAR_MODEL_PROVIDER: deterministic
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      minio-init:
+        condition: service_completed_successfully
+
+  api:
+    build:
+      context: .
+      target: api
+    restart: unless-stopped
+    environment: *api-environment
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        VITE_API_URL: ""
+    restart: unless-stopped
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  gateway:
+    build:
+      context: .
+      target: gateway
+    restart: unless-stopped
+    environment:
+      TRUSTED_PROXY_CIDR: 127.0.0.1/32
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${DEMO_HTTP_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  demo-postgres-data:
+  demo-minio-data:

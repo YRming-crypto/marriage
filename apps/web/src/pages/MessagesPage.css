@@ -1,0 +1,110 @@
+.human-conversation__writing-aids {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.human-conversation__writing-aids > section {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.human-conversation__writing-aid-heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.human-conversation__writing-aid-heading strong {
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+}
+
+.human-conversation__writing-aid-heading span {
+  color: var(--color-ink-faint);
+  font-size: 0.78rem;
+}
+
+.human-conversation__suggestion-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.human-conversation__suggestion-list button {
+  min-height: 36px;
+  padding: 7px var(--space-3);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.human-conversation__suggestion-list button:hover,
+.human-conversation__suggestion-list button:focus-visible {
+  border-color: var(--color-brand);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-dark);
+}
+
+.human-conversation__risk-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-yellow);
+  border-radius: var(--radius-sm);
+  background: var(--color-yellow-soft);
+  color: var(--color-ink);
+}
+
+.human-conversation__risk-warning > svg {
+  flex: 0 0 auto;
+  color: var(--color-orange);
+}
+
+.human-conversation__risk-warning strong,
+.human-conversation__risk-warning p,
+.human-conversation__risk-warning small {
+  display: block;
+  margin: 0;
+}
+
+.human-conversation__risk-warning p {
+  margin-top: var(--space-1);
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+}
+
+.human-conversation__risk-warning small {
+  margin-top: var(--space-1);
+  color: var(--color-ink-faint);
+}
+
+@media (max-width: 640px) {
+  .human-conversation__writing-aid-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .human-conversation__suggestion-list {
+    display: grid;
+  }
+
+  .human-conversation__suggestion-list button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .human-conversation__suggestion-list button {
+    transition: none;
+  }
+}

@@ -1,0 +1,743 @@
+.account-security {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-8);
+}
+
+.account-security > *,
+.account-security__section,
+.account-security__section-heading > div,
+.account-security__account-actions article,
+.account-security__appeal-layout > *,
+.account-security__export-panel > * {
+  min-width: 0;
+}
+
+.account-security__header {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+.account-security__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.account-security__summary span {
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 42px;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink-soft);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.account-security__summary svg {
+  width: 20px;
+  color: var(--color-brand);
+}
+
+.account-security__nav {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-block: 1px solid var(--color-line-strong);
+}
+
+.account-security__nav a {
+  display: flex;
+  min-width: 0;
+  min-height: 64px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-right: 1px solid var(--color-line);
+  color: var(--color-ink-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+.account-security__nav a:last-child {
+  border-right: 0;
+}
+
+.account-security__nav a:hover {
+  background: var(--color-brand-soft);
+  color: var(--color-brand-dark);
+}
+
+.account-security__nav svg {
+  width: 20px;
+  flex: 0 0 20px;
+}
+
+.account-security__notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+}
+
+.account-security__notice svg {
+  flex: 0 0 22px;
+}
+
+.account-security__notice--success {
+  border-color: var(--color-green);
+  background: var(--color-green-soft);
+  color: var(--color-ink);
+}
+
+.account-security__notice--error,
+.account-security__form-error {
+  border-color: var(--color-brand);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-dark);
+}
+
+.account-security__section {
+  scroll-margin-top: 120px;
+  padding: var(--space-8);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.account-security__section-heading {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.account-security__section-heading--actions {
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.account-security__section-heading h2 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xl);
+}
+
+.account-security__section-heading p,
+.account-security__section-heading small {
+  color: var(--color-ink-soft);
+}
+
+.account-security__section-heading p {
+  margin: 0;
+}
+
+.account-security__section-heading small {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.account-security__section-icon,
+.account-security__choice-icon,
+.account-security__device-icon {
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
+.account-security__section-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.account-security__section-icon--blue {
+  background: var(--color-blue-soft);
+  color: var(--color-blue);
+}
+
+.account-security__section-icon--orange {
+  background: var(--color-orange-soft);
+  color: var(--color-orange);
+}
+
+.account-security__section-icon--yellow {
+  background: var(--color-yellow-soft);
+  color: var(--color-yellow);
+}
+
+.account-security__section-icon--green {
+  background: var(--color-green-soft);
+  color: var(--color-green);
+}
+
+.account-security__choice-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.account-security__choice-list label {
+  position: relative;
+  display: grid;
+  min-height: 138px;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.account-security__choice-list label:hover,
+.account-security__choice-list label.is-selected {
+  border-color: var(--color-brand);
+}
+
+.account-security__choice-list label.is-selected {
+  background: var(--color-brand-soft);
+}
+
+.account-security__choice-list input {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-brand);
+}
+
+.account-security__choice-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--color-surface);
+}
+
+.account-security__choice-list strong,
+.account-security__choice-list small {
+  display: block;
+}
+
+.account-security__choice-list strong {
+  margin-bottom: var(--space-2);
+  padding-right: var(--space-4);
+  font-size: var(--text-md);
+}
+
+.account-security__choice-list small {
+  color: var(--color-ink-soft);
+  line-height: 1.65;
+}
+
+.account-security__section-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.account-security__section-actions small {
+  color: var(--color-ink-soft);
+}
+
+.account-security__session-list,
+.account-security__history ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account-security__session-list {
+  border-top: 1px solid var(--color-line);
+}
+
+.account-security__session-list li {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 90px;
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.account-security__device-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--color-blue-soft);
+  color: var(--color-blue);
+}
+
+.account-security__session-detail,
+.account-security__session-detail > span {
+  display: flex;
+}
+
+.account-security__session-detail {
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.account-security__session-detail > span {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.account-security__session-detail > small {
+  color: var(--color-ink-soft);
+}
+
+.account-security__session-detail strong,
+.account-security__session-detail > small,
+.account-security__history strong,
+.account-security__history p,
+.account-security__account-actions p,
+.account-security__export-panel p {
+  overflow-wrap: anywhere;
+}
+
+.account-security__current,
+.account-security__status {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.account-security__current,
+.account-security__status--approved,
+.account-security__status--resolved {
+  background: var(--color-green-soft);
+  color: var(--color-green);
+}
+
+.account-security__protected {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.account-security__account-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.account-security__account-actions article {
+  display: flex;
+  min-height: 146px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+}
+
+.account-security__account-actions p,
+.account-security__cooling p,
+.account-security__export-panel p {
+  margin: var(--space-2) 0 0;
+  color: var(--color-ink-soft);
+}
+
+.account-security__danger-button {
+  min-height: 46px;
+  padding-inline: var(--space-5);
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-brand);
+  font-weight: 700;
+}
+
+.account-security__danger-button:hover {
+  background: var(--color-brand);
+  color: var(--color-surface);
+}
+
+.account-security__danger-button--large {
+  min-height: 52px;
+  font-size: var(--text-md);
+}
+
+.account-security__danger-button:disabled {
+  border-color: var(--color-line);
+  background: var(--color-surface-muted);
+  color: var(--color-ink-faint);
+  cursor: not-allowed;
+}
+
+.account-security__cooling,
+.account-security__export-panel {
+  display: grid;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--color-orange);
+  border-radius: var(--radius-md);
+  background: var(--color-orange-soft);
+}
+
+.account-security__cooling {
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+}
+
+.account-security__cooling > svg {
+  color: var(--color-orange);
+}
+
+.account-security__appeal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: var(--space-8);
+}
+
+.account-security__form {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+}
+
+.account-security__form label,
+.account-security__dialog label:not(.account-security__confirm-check) {
+  display: grid;
+  gap: var(--space-2);
+  font-weight: 700;
+}
+
+.account-security__form textarea,
+.account-security__dialog textarea {
+  width: 100%;
+  resize: vertical;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: inherit;
+  line-height: 1.6;
+}
+
+.account-security__form textarea:focus,
+.account-security__dialog textarea:focus {
+  border-color: var(--color-focus);
+  outline: 3px solid color-mix(in oklch, var(--color-focus) 20%, transparent);
+}
+
+.account-security__form-error {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+}
+
+.account-security__history {
+  padding-left: var(--space-8);
+  border-left: 1px solid var(--color-line);
+}
+
+.account-security__history h3 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-lg);
+}
+
+.account-security__history li {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.account-security__history li > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.account-security__history time,
+.account-security__history p,
+.account-security__empty {
+  color: var(--color-ink-soft);
+  font-size: var(--text-sm);
+}
+
+.account-security__history p,
+.account-security__empty {
+  margin: 0;
+}
+
+.account-security__status--pending,
+.account-security__status--reviewing {
+  background: var(--color-yellow-soft);
+  color: var(--color-yellow);
+}
+
+.account-security__status--rejected {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
+.account-security__export-panel {
+  grid-template-columns: minmax(0, 1fr) auto;
+  border-color: var(--color-green);
+  background: var(--color-green-soft);
+}
+
+.account-security__state {
+  display: grid;
+  min-height: 440px;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.account-security__state h1,
+.account-security__state p {
+  margin: 0;
+}
+
+.account-security__state p {
+  color: var(--color-ink-soft);
+}
+
+.account-security__state > svg {
+  width: 48px;
+  height: 48px;
+  color: var(--color-brand);
+}
+
+.account-security__spinner {
+  animation: account-security-spin 1s linear infinite;
+}
+
+.account-security__dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: var(--space-5);
+  background: var(--color-overlay);
+}
+
+.account-security__dialog {
+  position: relative;
+  display: grid;
+  width: min(100%, 560px);
+  gap: var(--space-4);
+  padding: var(--space-8);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-float);
+}
+
+.account-security__dialog h2,
+.account-security__dialog p {
+  margin: 0;
+}
+
+.account-security__dialog p {
+  color: var(--color-ink-soft);
+}
+
+.account-security__dialog-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+}
+
+.account-security__dialog-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink-soft);
+}
+
+.account-security__dialog-close:hover {
+  background: var(--color-surface-muted);
+}
+
+.account-security__dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.account-security__confirm-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  font-weight: 700;
+}
+
+.account-security__confirm-check input {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 21px;
+  accent-color: var(--color-brand);
+}
+
+@keyframes account-security-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-security__spinner { animation: none; }
+}
+
+@media (max-width: 900px) {
+  .account-security__nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .account-security__nav a {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .account-security__choice-list,
+  .account-security__account-actions,
+  .account-security__appeal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-security__section-heading--actions {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .account-security__section-heading--actions > .button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .account-security__history {
+    padding: var(--space-6) 0 0;
+    border-top: 1px solid var(--color-line);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .account-security__summary span {
+    width: 100%;
+  }
+
+  .account-security__section {
+    padding: var(--space-5);
+  }
+
+  .account-security__nav {
+    grid-template-columns: 1fr;
+  }
+
+  .account-security__nav a {
+    justify-content: flex-start;
+    border-right: 0;
+  }
+
+  .account-security__section-heading {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .account-security__section-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .account-security__section-heading h2 {
+    font-size: var(--text-xl);
+  }
+
+  .account-security__section-actions,
+  .account-security__dialog-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .account-security__section-actions .button,
+  .account-security__dialog-actions .button,
+  .account-security__dialog-actions .account-security__danger-button {
+    width: 100%;
+  }
+
+  .account-security__session-list li {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .account-security__session-list li > .button,
+  .account-security__session-list li > .account-security__protected {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .account-security__cooling,
+  .account-security__export-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .account-security__cooling .button,
+  .account-security__export-panel .button {
+    width: 100%;
+  }
+
+  .account-security__dialog {
+    padding: var(--space-6);
+  }
+}
+
+@media (max-width: 420px) {
+  .account-security__dialog-backdrop {
+    padding: var(--space-3);
+  }
+
+  .account-security__dialog {
+    padding: var(--space-5);
+  }
+}
