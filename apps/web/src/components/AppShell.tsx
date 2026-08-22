@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { BottomNav } from "./BottomNav";
-import { DatingAssistant } from "./DatingAssistant";
 import { MotionEnhancer } from "./MotionEnhancer";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader } from "./SiteHeader";
@@ -68,7 +67,6 @@ export function AppShell() {
       <PageTransition />
       <SiteFooter />
       <BottomNav />
-      <DatingAssistant />
       <ScrollRestoration />
     </MotionEnhancer>
   );

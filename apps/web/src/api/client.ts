@@ -76,12 +76,16 @@ async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
   try {
     const headers = new Headers(init.headers);
     if (init.body !== undefined && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
+    const bodySize = typeof init.body === "string" ? init.body.length : 0;
+    console.log(`[API Request] ${init.method || "GET"} ${path}, body size: ${bodySize} bytes`);
     response = await fetch(`${API_BASE}${path}`, {
       ...init,
       credentials: "include",
       headers,
     });
-  } catch {
+    console.log(`[API Response] ${response.status} ${response.statusText}`);
+  } catch (err) {
+    console.error(`[API Error] ${path}:`, err);
     throw new ApiTransportError();
   }
 

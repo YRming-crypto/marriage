@@ -6,7 +6,7 @@ describe("主导航", () => {
     expect(mainNavigation.map((item) => item.label)).toEqual([
       "首页",
       "匹配大厅",
-      "灵魂测试",
+      "性格缘分",
       "消息",
       "话题广场",
       "动态",

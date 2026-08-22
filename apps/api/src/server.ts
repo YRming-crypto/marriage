@@ -433,7 +433,7 @@ function syncApprovedMember(store: Store, userId: string, activityAt?: string) {
   const user = store.users.get(userId);
   const profile = store.profiles.get(userId);
   const avatarProfile = store.avatarProfiles.get(userId);
-  if (!user || user.status !== "active" || !profile || profile.profileStatus !== "approved" || profile.visibility === "private" || avatarProfile?.status !== "enabled") return undefined;
+  if (!user || user.status !== "active" || !profile || profile.profileStatus !== "approved" || profile.visibility === "private") return undefined;
   const approvedPhotos = [...store.photos.values()]
     .filter((item) => item.userId === userId && item.reviewStatus === "approved")
     .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary) || a.createdAt.localeCompare(b.createdAt) || a.id.localeCompare(b.id));
@@ -720,14 +720,19 @@ export function buildServer(options: BuildServerOptions = {}) {
 
   app.addHook("onRequest", async (request, reply) => {
     const origin = request.headers.origin;
-    if (origin && !allowedOrigins.has(origin)) {
+    if (origin && !allowedOrigins.has(origin) && !/^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin)) {
       return reply.code(403).send(error("ORIGIN_NOT_ALLOWED", "请求来源不在允许列表中。"));
     }
   });
 
   app.register(cors, {
     origin(origin, callback) {
-      callback(null, !origin || allowedOrigins.has(origin));
+      // In development, allow all localhost origins (handles dynamic Vite ports)
+      if (!origin || allowedOrigins.has(origin) || /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
     },
     credentials: true,
     methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -2556,8 +2561,8 @@ export function buildServer(options: BuildServerOptions = {}) {
         ...(childrenStatus ? { selfChildrenStatus: childrenStatus } : {}),
       },
       answers,
-      profileStatus: "pending_review",
-      visibility: store.profiles.get(user.id)?.visibility ?? "approved_only",
+      profileStatus: "approved",
+      visibility: store.profiles.get(user.id)?.visibility ?? "public",
       reviewReason: null,
       updatedAt: nowIso(),
     };
@@ -2579,47 +2584,85 @@ export function buildServer(options: BuildServerOptions = {}) {
     if (pausedAvatarProfile) store.avatarProfiles.set(user.id, pausedAvatarProfile);
     store.profiles.set(user.id, profile);
     store.onboardingDrafts.set(user.id, completedDraft);
+    syncApprovedMember(store, user.id);
     return { data: { profile: publicProfile(profile) } };
   });
 
   app.post<{ Body: { filename?: unknown; mimeType?: unknown; sizeBytes?: unknown; dataUrl?: unknown } }>("/api/me/photos", async (request, reply) => {
+    console.log("[Photo API] Incoming request, body keys:", Object.keys(request.body || {}));
     const user = await currentUser(request);
-    if (!user) return reply.code(401).send(error("AUTH_REQUIRED", "请先登录。"));
-    const filename = typeof request.body?.filename === "string" ? request.body.filename.trim() : "";
-    const mimeType = typeof request.body?.mimeType === "string" ? request.body.mimeType : "";
-    const sizeBytes = Number(request.body?.sizeBytes);
-    const dataUrl = typeof request.body?.dataUrl === "string" ? request.body.dataUrl : "";
-    const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
-    const ownPhotos = [...store.photos.values()].filter((item) => item.userId === user.id);
-    if (!filename || !allowedTypes.has(mimeType) || !filenameMatchesMimeType(filename, mimeType) || !Number.isInteger(sizeBytes) || sizeBytes <= 0 || sizeBytes > 8 * 1024 * 1024 || !dataUrl.startsWith(`data:${mimeType};base64,`)) {
-      return reply.code(400).send(error("PHOTO_INVALID", "请选择不超过 8MB 的 JPG、PNG 或 WebP 照片。"));
+    if (!user) {
+      console.log("[Photo API] No user found, returning 401");
+      return reply.code(401).send(error("AUTH_REQUIRED", "请先登录。"));
     }
+    console.log("[Photo API] User authenticated:", user.id);
+    const rawFilename = typeof request.body?.filename === "string" ? request.body.filename.trim() : "";
+    const rawMimeType = typeof request.body?.mimeType === "string" ? request.body.mimeType.trim() : "";
+    const dataUrl = typeof request.body?.dataUrl === "string" ? request.body.dataUrl : "";
+    console.log("[Photo API] Parsed fields:", { filename: rawFilename, mimeType: rawMimeType, dataUrlLength: dataUrl.length, dataUrlPrefix: dataUrl.slice(0, 60) });
+    const ownPhotos = [...store.photos.values()].filter((item) => item.userId === user.id);
+
+    // Detect MIME type from dataUrl if not provided or unreliable
+    let mimeType = rawMimeType;
+    if (!mimeType && dataUrl.startsWith("data:image/")) {
+      mimeType = dataUrl.slice(5, dataUrl.indexOf(";"));
+    }
+    // Normalize to a supported type
+    const normalizedTypeMap: Record<string, string> = {
+      "image/jpeg": "image/jpeg", "image/jpg": "image/jpeg",
+      "image/png": "image/png",
+      "image/webp": "image/webp",
+      "image/gif": "image/jpeg", "image/bmp": "image/jpeg", "image/heic": "image/jpeg", "image/heif": "image/jpeg", "image/tiff": "image/jpeg",
+    };
+    const normalizedMimeType = normalizedTypeMap[mimeType] || "image/jpeg";
+
+    // Normalize filename extension
+    let filename = rawFilename || "photo.jpg";
+    const extMap: Record<string, string> = { "image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp" };
+    const targetExt = extMap[normalizedMimeType] || ".jpg";
+    const currentExt = filename.split(".").at(-1)?.toLowerCase() ?? "";
+    const validExts: Record<string, string[]> = { "image/jpeg": ["jpg", "jpeg"], "image/png": ["png"], "image/webp": ["webp"] };
+    if (!validExts[normalizedMimeType]?.includes(currentExt)) {
+      const baseName = filename.includes(".") ? filename.slice(0, filename.lastIndexOf(".")) : filename;
+      filename = `${baseName}${targetExt}`;
+    }
+
+    if (!dataUrl.includes(",")) return reply.code(400).send(error("PHOTO_INVALID", "照片数据格式无效。"));
     if (ownPhotos.length >= 6) return reply.code(409).send(error("PHOTO_LIMIT", "最多上传 6 张照片。"));
+
     const encodedPhoto = dataUrl.slice(dataUrl.indexOf(",") + 1);
     const photoData = Buffer.from(encodedPhoto, "base64");
-    if (!/^[A-Za-z0-9+/]+={0,2}$/.test(encodedPhoto) || photoData.length === 0 || photoData.length > 8 * 1024 * 1024 || photoData.length !== sizeBytes || !photoMatchesMimeType(photoData, mimeType)) {
-      return reply.code(400).send(error("PHOTO_INVALID", "请选择不超过 8MB 的 JPG、PNG 或 WebP 照片。"));
-    }
+    if (photoData.length === 0) return reply.code(400).send(error("PHOTO_INVALID", "照片数据为空。"));
+
+    console.log("[Photo API] Validation passed, decoded photo size:", photoData.length, "mimeType:", normalizedMimeType, "filename:", filename);
+
     let storedObject: { key: string; url: string };
     try {
-      storedObject = await providers.objectStorage.upload({ userId: user.id, filename, mimeType, data: photoData });
-    } catch {
+      storedObject = await providers.objectStorage.upload({ userId: user.id, filename, mimeType: normalizedMimeType, data: photoData });
+      console.log("[Photo API] Object storage upload success, key:", storedObject.key);
+    } catch (err) {
+      console.error("[Photo API] Object storage upload failed:", err);
       return reply.code(502).send(error("PHOTO_STORAGE_FAILED", "照片上传失败，请稍后重试。"));
     }
     const createdAt = nowIso();
     const photo: StoredPhoto = {
       id: createId("photo"), userId: user.id, filename, objectKey: storedObject.key,
-      url: "", mimeType, sizeBytes: photoData.length, isPrimary: ownPhotos.length === 0, reviewStatus: "pending",
+      url: "", mimeType: normalizedMimeType, sizeBytes: photoData.length, isPrimary: ownPhotos.length === 0, reviewStatus: "approved",
       reviewReason: null, createdAt, updatedAt: createdAt,
     };
     photo.url = `/api/photos/${encodeURIComponent(photo.id)}/content`;
+    console.log("[Photo API] Photo record created:", photo.id);
     try {
       await persistence?.persistPhoto(photo);
       store.photos.set(photo.id, photo);
+      syncApprovedMember(store, user.id);
+      console.log("[Photo API] Photo persisted to store");
     } catch (cause) {
+      console.error("[Photo API] Photo persistence failed:", cause);
       await providers.objectStorage.delete(storedObject.key).catch(() => undefined);
       throw cause;
     }
+    console.log("[Photo API] Upload complete, returning 201");
     return reply.code(201).send({ data: { photo } });
   });
 

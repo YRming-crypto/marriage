@@ -26,7 +26,7 @@ import { MemberInterestProvider } from "../features/interests/MemberInterestCont
 const services = [
   { icon: Search, title: "找对象", text: "按城市、年龄和交往目标，寻找愿意认真认识的人。", to: "/find", tone: "red" },
   { icon: Sparkles, title: "智能牵线", text: "选择心仪对象后，先和 TA 的 AI 分身安心聊聊。", to: "/matchmaking", tone: "blue" },
-  { icon: HeartHandshake, title: "灵魂测试", text: "趣味小题探索你的性格画像，匹配更合适的人。", to: "/soul-test", tone: "purple" },
+  { icon: HeartHandshake, title: "性格缘分", text: "趣味小题探索你的性格画像，匹配更合适的人。", to: "/soul-test", tone: "purple" },
   { icon: MessageCircleMore, title: "我的消息", text: "查看聊天申请、系统通知和已经开启的真人聊天。", to: "/messages", tone: "green" },
   { icon: Users, title: "生活动态", text: "从日常照片和分享中，更自然地了解一个人。", to: "/moments", tone: "yellow" },
   { icon: CalendarDays, title: "线下活动", text: "查看人数适中、地点公开的同城活动形式。", to: "/activities", tone: "orange" },

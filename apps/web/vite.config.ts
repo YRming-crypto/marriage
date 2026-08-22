@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: "127.0.0.1",
-    port: 4183,
+    port: 4185,
     allowedHosts: [".trycloudflare.com", ".lhr.life"],
     proxy: {
       "/api": {
@@ -16,6 +16,6 @@ export default defineConfig({
   },
   preview: {
     host: "127.0.0.1",
-    port: 4183,
+    port: 4185,
   },
 });

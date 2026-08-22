@@ -6165,6 +6165,263 @@ textarea:focus {
   flex-wrap: wrap;
 }
 
+/* ─── Soul Test Mode Selector & Voice Chat ───────────────────────────── */
+
+.soul-test-mode-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 560px;
+  margin: 0 auto var(--space-6);
+}
+
+.soul-test-mode-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 200ms ease;
+}
+.soul-test-mode-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px oklch(0.20 0.05 0 / 0.08);
+  border-color: oklch(0.85 0.06 280);
+}
+.soul-test-mode-card--voice:hover {
+  border-color: oklch(0.85 0.06 220);
+}
+.soul-test-mode-card__icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: oklch(0.94 0.04 280);
+  color: oklch(0.45 0.12 280);
+  flex-shrink: 0;
+}
+.soul-test-mode-card--voice .soul-test-mode-card__icon {
+  background: oklch(0.94 0.04 220);
+  color: oklch(0.45 0.12 220);
+}
+.soul-test-mode-card__content {
+  flex: 1;
+}
+.soul-test-mode-card__content strong {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+.soul-test-mode-card__content p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+.soul-test-mode-card__arrow {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.soul-test-mode-note {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ─── Voice Chat Container ─────────────────────────────────────────── */
+
+.voice-chat-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-4) 0 var(--space-10);
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+.voice-chat-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(135deg, oklch(0.94 0.04 220), oklch(0.92 0.06 280));
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+}
+.voice-chat-header svg {
+  color: oklch(0.50 0.14 280);
+  flex-shrink: 0;
+}
+.voice-chat-header strong {
+  display: block;
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+.voice-chat-header p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.voice-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.voice-chat-message {
+  display: flex;
+  animation: voice-chat-enter 300ms ease both;
+}
+@keyframes voice-chat-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.voice-chat-message--ai {
+  justify-content: flex-start;
+}
+.voice-chat-message--user {
+  justify-content: flex-end;
+}
+.voice-chat-message__bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: 80%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+.voice-chat-message--ai .voice-chat-message__bubble {
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  border-bottom-left-radius: var(--space-1);
+}
+.voice-chat-message--user .voice-chat-message__bubble {
+  background: oklch(0.60 0.14 280);
+  color: white;
+  border-bottom-right-radius: var(--space-1);
+}
+.voice-chat-message__bubble p {
+  margin: 0;
+}
+.voice-chat-message__avatar {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0.85 0.08 280);
+  color: white;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.voice-chat-speaking-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  padding: 0 var(--space-2);
+  animation: voice-chat-pulse 1.5s ease-in-out infinite;
+}
+@keyframes voice-chat-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.voice-chat-input-area {
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.voice-chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.voice-chat-mic-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: oklch(0.50 0.12 280);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 200ms ease;
+}
+.voice-chat-mic-button:hover {
+  background: var(--color-surface-muted);
+}
+.voice-chat-mic-button.is-listening {
+  background: oklch(0.60 0.18 18);
+  color: white;
+  border-color: oklch(0.55 0.18 18);
+  animation: voice-chat-mic-pulse 1s ease-in-out infinite;
+}
+@keyframes voice-chat-mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.60 0.18 18 / 0.4); }
+  50% { box-shadow: 0 0 0 8px oklch(0.60 0.18 18 / 0); }
+}
+
+.voice-chat-text-input {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: border-color 150ms ease;
+  min-height: 40px;
+}
+.voice-chat-text-input:focus {
+  border-color: oklch(0.55 0.16 280);
+}
+.voice-chat-text-input:disabled {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
+.voice-chat-progress {
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  padding-top: var(--space-1);
+}
+
+@media (max-width: 640px) {
+  .soul-test-mode-card {
+    padding: var(--space-4);
+  }
+  .voice-chat-message__bubble {
+    max-width: 90%;
+  }
+}
+
 /* Service row purple tone */
 .service-row--purple {
   --service-accent: oklch(0.55 0.16 280);
@@ -8608,307 +8865,162 @@ textarea:focus {
   margin-top: 0.5rem;
 }
 
-/* ─── Dating Assistant ───────────────────────────────────────────────── */
+/* ─── Dating Assistant (inline, one-line) ────────────────────────────── */
 
-.dating-assistant__fab {
-  position: fixed;
-  bottom: 5.5rem;
-  right: 1.25rem;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, oklch(0.65 0.2 280), oklch(0.55 0.22 300));
-  color: white;
-  border: none;
-  cursor: pointer;
+.dating-assistant-inline {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px oklch(0.55 0.22 280 / 0.4);
-  z-index: 100;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.dating-assistant__fab:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 24px oklch(0.55 0.22 280 / 0.5);
-}
-
-.dating-assistant__fab svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.dating-assistant__fab-badge {
-  position: absolute;
-  top: -0.25rem;
-  right: -0.25rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  background: oklch(0.7 0.2 80);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: pulse-badge 2s ease-in-out infinite;
-}
-
-.dating-assistant__fab-badge svg {
-  width: 0.75rem;
-  height: 0.75rem;
-}
-
-@keyframes pulse-badge {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-.dating-assistant__dialog {
-  position: fixed;
-  bottom: 9.5rem;
-  right: 1.25rem;
-  width: min(380px, calc(100vw - 2.5rem));
-  max-height: min(560px, calc(100vh - 12rem));
+  gap: 0.65rem;
+  padding: 0.55rem 0.85rem;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 1.25rem;
-  box-shadow: 0 8px 32px oklch(0.2 0 0 / 0.15);
-  display: flex;
-  flex-direction: column;
-  z-index: 101;
-  overflow: hidden;
-  animation: dialog-enter 0.2s ease;
+  border-radius: 2rem;
+  box-shadow: 0 2px 8px oklch(0.2 0 0 / 0.06);
+  font-size: 0.85rem;
+  line-height: 1;
 }
 
-@keyframes dialog-enter {
-  from { opacity: 0; transform: translateY(1rem) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.dating-assistant__header {
-  display: flex;
+.dating-assistant-inline__header {
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(135deg, oklch(0.65 0.2 280), oklch(0.55 0.22 300));
-  color: white;
-}
-
-.dating-assistant__header svg:first-child {
-  width: 1.5rem;
-  height: 1.5rem;
+  gap: 0.35rem;
+  color: var(--accent);
   flex-shrink: 0;
 }
 
-.dating-assistant__header div {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.dating-assistant__header strong {
-  font-size: 0.95rem;
-}
-
-.dating-assistant__header span {
-  font-size: 0.7rem;
-  opacity: 0.8;
-}
-
-.dating-assistant__close {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 0.5rem;
-  display: flex;
-  opacity: 0.8;
-  transition: opacity 0.15s ease;
-}
-
-.dating-assistant__close:hover {
-  opacity: 1;
-}
-
-.dating-assistant__close svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.dating-assistant__messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-height: 320px;
-}
-
-.dating-assistant__message {
-  display: flex;
-  max-width: 85%;
-}
-
-.dating-assistant__message--advisor {
-  align-self: flex-start;
-}
-
-.dating-assistant__message--user {
-  align-self: flex-end;
-}
-
-.dating-assistant__message-bubble {
-  padding: 0.6rem 0.8rem;
-  border-radius: 1rem;
+.dating-assistant-inline__header strong {
   font-size: 0.85rem;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.dating-assistant__message--advisor .dating-assistant__message-bubble {
-  background: var(--surface-muted);
+  font-weight: 600;
   color: var(--text);
-  border-bottom-left-radius: 0.3rem;
 }
 
-.dating-assistant__message--user .dating-assistant__message-bubble {
-  background: linear-gradient(135deg, oklch(0.65 0.2 280), oklch(0.55 0.22 300));
-  color: white;
-  border-bottom-right-radius: 0.3rem;
+.dating-assistant-inline__header svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 
-.dating-assistant__message-category {
+.dating-assistant-inline__header svg:last-child {
+  color: oklch(0.7 0.2 80);
+}
+
+.dating-assistant-inline__actions {
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.dating-assistant-inline__btn {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.7rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface-muted);
+  font-size: 0.78rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.dating-assistant-inline__btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: oklch(0.97 0.02 280);
+  color: var(--accent);
+}
+
+.dating-assistant-inline__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dating-assistant-inline__btn svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+}
+
+.dating-assistant-inline__typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   color: var(--muted);
-  margin-bottom: 0.3rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
-.dating-assistant__message-category svg {
-  width: 0.75rem;
-  height: 0.75rem;
-}
-
-.dating-assistant__typing {
-  display: flex;
-  gap: 0.3rem;
-  padding: 0.6rem 0.8rem;
-}
-
-.dating-assistant__typing span {
-  width: 0.5rem;
-  height: 0.5rem;
+.dating-assistant-inline__typing span {
+  width: 0.35rem;
+  height: 0.35rem;
   background: var(--muted);
   border-radius: 50%;
   animation: typing-dot 1.4s ease-in-out infinite;
 }
 
-.dating-assistant__typing span:nth-child(2) { animation-delay: 0.2s; }
-.dating-assistant__typing span:nth-child(3) { animation-delay: 0.4s; }
+.dating-assistant-inline__typing span:nth-child(2) { animation-delay: 0.2s; }
+.dating-assistant-inline__typing span:nth-child(3) { animation-delay: 0.4s; }
 
-@keyframes typing-dot {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-  30% { transform: translateY(-0.4rem); opacity: 1; }
-}
-
-.dating-assistant__quick {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.4rem;
-  padding: 0.5rem 0.75rem;
-  border-top: 1px solid var(--line);
-}
-
-.dating-assistant__quick-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: var(--surface-muted);
-  border: 1px solid var(--line);
-  border-radius: 0.6rem;
-  padding: 0.5rem 0.6rem;
+.dating-assistant-inline__typing small {
   font-size: 0.75rem;
-  color: var(--text);
-  cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  margin-left: 0.2rem;
 }
 
-.dating-assistant__quick-btn:hover {
-  border-color: var(--accent);
-  background: oklch(0.97 0.02 280);
-}
-
-.dating-assistant__quick-btn svg {
-  width: 0.9rem;
-  height: 0.9rem;
-  color: var(--accent);
-}
-
-.dating-assistant__input {
+.dating-assistant-inline__advice {
   display: flex;
-  gap: 0.4rem;
-  padding: 0.6rem 0.75rem;
-  border-top: 1px solid var(--line);
-}
-
-.dating-assistant__input input {
-  flex: 1;
-  border: 1px solid var(--line);
-  border-radius: 1.5rem;
-  padding: 0.5rem 0.8rem;
-  font-size: 0.85rem;
-  font-family: inherit;
-  background: var(--surface);
+  align-items: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.45rem 0.7rem;
+  background: oklch(0.98 0.015 280 / 0.7);
+  border-radius: 0.8rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
   color: var(--text);
-  transition: border-color 0.15s ease;
+  animation: advice-fade 0.25s ease;
 }
 
-.dating-assistant__input input:focus {
-  outline: none;
-  border-color: var(--accent);
+@keyframes advice-fade {
+  from { opacity: 0; transform: translateY(0.25rem); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.dating-assistant__input button {
-  background: linear-gradient(135deg, oklch(0.65 0.2 280), oklch(0.55 0.22 300));
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 2.25rem;
-  height: 2.25rem;
-  display: flex;
+.dating-assistant-inline__advice-icon {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
   flex-shrink: 0;
-  transition: opacity 0.15s ease;
+  margin-top: 0.05rem;
 }
 
-.dating-assistant__input button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.dating-assistant-inline__advice-icon svg {
+  width: 0.8rem;
+  height: 0.8rem;
 }
 
-.dating-assistant__input button svg {
-  width: 1rem;
-  height: 1rem;
+.dating-assistant-inline__advice p {
+  margin: 0;
 }
 
-/* Desktop: position FAB bottom-right above footer */
+/* Desktop: slightly larger pill */
 @media (min-width: 900px) {
-  .dating-assistant__fab {
-    bottom: 2rem;
-    right: 2rem;
+  .dating-assistant-inline {
+    gap: 0.8rem;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.9rem;
   }
 
-  .dating-assistant__dialog {
-    bottom: 6rem;
-    right: 2rem;
+  .dating-assistant-inline__btn {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.85rem;
+  }
+
+  .dating-assistant-inline__advice {
+    font-size: 0.86rem;
   }
 }

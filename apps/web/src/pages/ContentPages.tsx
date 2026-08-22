@@ -410,7 +410,10 @@ export function AuthPage() {
       navigate(nextPath ?? "/admin/review");
       return;
     }
-    if (result.profile) {
+    // Check if user has completed onboarding (either from server or localStorage)
+    const hasProfile = result.profile !== null;
+    const hasCompletedOnboarding = localStorage.getItem("ai-marriage-profile-saved") === "true";
+    if (hasProfile || hasCompletedOnboarding) {
       navigate(nextPath ?? "/me");
       return;
     }

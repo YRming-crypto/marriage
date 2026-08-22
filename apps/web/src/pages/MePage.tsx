@@ -274,7 +274,7 @@ export function MePage() {
           <Link to="/messages"><MessageCircleMore /><span><strong>查看消息</strong><small>处理申请和真人聊天</small></span><ArrowRight /></Link>
           <Link to="/me/security"><ShieldCheck /><span><strong>账号与安全</strong><small>管理隐私、设备、申诉和数据</small></span><ArrowRight /></Link>
           <Link to="/matchmaking"><HeartHandshake /><span><strong>进入匹配大厅</strong><small>查看适合认真了解的会员</small></span><ArrowRight /></Link>
-          <Link to="/soul-test"><Sparkles /><span><strong>灵魂测试</strong><small>探索性格画像，匹配更合适的人</small></span><ArrowRight /></Link>
+          <Link to="/soul-test"><Sparkles /><span><strong>性格缘分</strong><small>探索性格画像，匹配更合适的人</small></span><ArrowRight /></Link>
           <Link to="/tasks"><Trophy /><span><strong>任务中心</strong><small>每日签到、完成任务、累积积分</small></span><ArrowRight /></Link>
           <Link to="/vip"><Crown /><span><strong>VIP 会员</strong><small>解锁专属特权，让缘分更快到来</small></span><ArrowRight /></Link>
           {account.user.role === "admin" ? <Link to="/admin/review"><ClipboardCheck /><span><strong>管理员审核</strong><small>处理审核、安全与运营事项</small></span><ArrowRight /></Link> : null}

@@ -23,6 +23,7 @@ import {
   sendConversationMessage,
 } from "../api/client";
 import { normalizeLobbyMembers } from "../api/useMembers";
+import { DatingAssistant } from "../components/DatingAssistant";
 import "./MessagesPage.css";
 
 type MessageTab = "requests" | "chats" | "notices";
@@ -845,7 +846,8 @@ export function MessagesPage() {
           })}</section>)}
         </div>
         {messageError ? renderStatus(messageError, "error") : null}
-        {activeConversation.status === "blocked" ? <div className="human-conversation__blocked"><Ban /><div><strong>这段聊天已停止</strong><p>双方目前不能继续发送消息。你可以在个人中心管理黑名单。</p></div></div> : activeConversation.status === "archived" ? <div className="human-conversation__blocked"><Archive /><div><strong>这段聊天已结束</strong><p>历史消息仍然保留。点击“恢复聊天”后可以继续联系。</p></div></div> : <form className="human-conversation__composer" onSubmit={(event) => void handleSendMessage(event)}>
+        <DatingAssistant />
+        {activeConversation.status === "blocked" ? <div className="human-conversation__blocked"><Ban /><div><strong>这段聊天已停止</strong><p>双方目前不能继续发送消息。你可以在个人中心管理黑名单。</p></div></div> : activeConversation.status === "archived" ? <div className="human-conversation__blocked"><Archive /><div><strong>这段聊天已结束</strong><p>历史消息仍然保留。点击"恢复聊天"后可以继续联系。</p></div></div> : <form className="human-conversation__composer" onSubmit={(event) => void handleSendMessage(event)}>
           <div className="human-conversation__writing-aids">
             <section aria-labelledby="polite-greetings-title">
               <div className="human-conversation__writing-aid-heading"><strong id="polite-greetings-title">礼貌问候</strong><span>点一句作为开场</span></div>

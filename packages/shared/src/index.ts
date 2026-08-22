@@ -501,31 +501,65 @@ export interface SoulTestProgress {
 }
 
 export const soulTestQuestions: readonly SoulTestQuestion[] = [
-  // 社交能量 (Social Energy) - 内向 ↔ 外向
+  // 社交能量 (Social Energy) - 内向 ↔ 外向 — 10 题
   { id: "se1", dimension: "social", dimensionLabel: "社交能量", text: "周末空闲时，你更倾向于？", optionA: { label: "约朋友聚会或参加社交活动", value: 2 }, optionB: { label: "在家看书、追剧或享受独处", value: 0 } },
   { id: "se2", dimension: "social", dimensionLabel: "社交能量", text: "在社交场合中，你通常是？", optionA: { label: "主动认识新朋友，喜欢聊天", value: 2 }, optionB: { label: "更习惯和熟人待在一起", value: 0 } },
   { id: "se3", dimension: "social", dimensionLabel: "社交能量", text: "连续工作一周后，你最想怎么放松？", optionA: { label: "和喜欢的人一起出去走走", value: 2 }, optionB: { label: "安静地待着，减少社交", value: 0 } },
   { id: "se4", dimension: "social", dimensionLabel: "社交能量", text: "遇到有趣的事，你的第一反应是？", optionA: { label: "马上分享给身边的人", value: 2 }, optionB: { label: "先自己慢慢体会", value: 0 } },
+  { id: "se5", dimension: "social", dimensionLabel: "社交能量", text: "参加一个认识人不多的大型聚会时，你会？", optionA: { label: "主动和不同的人聊天，享受气氛", value: 2 }, optionB: { label: "找一个安静的角落，和少数人深聊", value: 0 } },
+  { id: "se6", dimension: "social", dimensionLabel: "社交能量", text: "你更喜欢的交流方式是？", optionA: { label: "面对面聊天，感受对方的表情和语气", value: 2 }, optionB: { label: "发消息或写信，可以慢慢组织语言", value: 0 } },
+  { id: "se7", dimension: "social", dimensionLabel: "社交能量", text: "朋友邀请你参加一个临时聚会，你通常会？", optionA: { label: "欣然前往，临时的约定也很开心", value: 2 }, optionB: { label: "先考虑一下，可能需要婉拒", value: 0 } },
+  { id: "se8", dimension: "social", dimensionLabel: "社交能量", text: "你在工作或生活中更愿意？", optionA: { label: "和团队协作，一起讨论方案", value: 2 }, optionB: { label: "独立完成任务，再和少数人确认", value: 0 } },
+  { id: "se9", dimension: "social", dimensionLabel: "社交能量", text: "对于社交活动，你更认同？", optionA: { label: "多认识朋友，路会越走越宽", value: 2 }, optionB: { label: "朋友不在多，有几个知己就好", value: 0 } },
+  { id: "se10", dimension: "social", dimensionLabel: "社交能量", text: "一整天没有和人说话之后，你会？", optionA: { label: "觉得有些闷，想出去走走找人聊", value: 2 }, optionB: { label: "觉得很舒适，享受安静的时光", value: 0 } },
 
-  // 情感表达 (Emotional Expression) - 含蓄 ↔ 直接
+  // 情感表达 (Emotional Expression) - 含蓄 ↔ 直接 — 10 题
   { id: "ee1", dimension: "expression", dimensionLabel: "情感表达", text: "对有好感的人，你更可能？", optionA: { label: "通过行动和细节暗示", value: 0 }, optionB: { label: "直接或比较明确地表达好感", value: 2 } },
   { id: "ee2", dimension: "expression", dimensionLabel: "情感表达", text: "发生矛盾时，你更倾向于？", optionA: { label: "先冷静一段时间，再找合适的时机说", value: 0 }, optionB: { label: "尽快把想法说清楚，不想憋着", value: 2 } },
   { id: "ee3", dimension: "expression", dimensionLabel: "情感表达", text: "日常相处中，你表达关心的方式更接近？", optionA: { label: "默默帮对方把事情做好", value: 0 }, optionB: { label: "用语言表达关心和想念", value: 2 } },
+  { id: "ee4", dimension: "expression", dimensionLabel: "情感表达", text: "当对方做了一件让你感动的事，你会？", optionA: { label: "记在心里，找机会用行动回应", value: 0 }, optionB: { label: "当面说出自己的感动", value: 2 } },
+  { id: "ee5", dimension: "expression", dimensionLabel: "情感表达", text: "你在吵架之后更常？", optionA: { label: "等双方都冷静后再慢慢沟通", value: 0 }, optionB: { label: "主动开口，把问题说清楚", value: 2 } },
+  { id: "ee6", dimension: "expression", dimensionLabel: "情感表达", text: "你更习惯怎样的赞美方式？", optionA: { label: "含蓄地夸赞，如「最近气色不错」", value: 0 }, optionB: { label: "直接地说「我很欣赏你这一点」", value: 2 } },
+  { id: "ee7", dimension: "expression", dimensionLabel: "情感表达", text: "当对方问你「你在想什么」时，你通常？", optionA: { label: "会简化回答，或换个话题", value: 0 }, optionB: { label: "会尽量把真实想法说出来", value: 2 } },
+  { id: "ee8", dimension: "expression", dimensionLabel: "情感表达", text: "你在关系中更看重？", optionA: { label: "默契——不用说太多也能互相理解", value: 0 }, optionB: { label: "坦诚——有话直说，不藏着掖着", value: 2 } },
+  { id: "ee9", dimension: "expression", dimensionLabel: "情感表达", text: "遇到不开心的事，你更可能？", optionA: { label: "自己消化，不太愿意给别人添麻烦", value: 0 }, optionB: { label: "找信任的人倾诉，说出来会好受些", value: 2 } },
+  { id: "ee10", dimension: "expression", dimensionLabel: "情感表达", text: "你觉得在一段好的关系里，最重要的是？", optionA: { label: "心照不宣的理解和陪伴", value: 0 }, optionB: { label: "开诚布公地沟通与交流", value: 2 } },
 
-  // 生活节奏 (Life Pace) - 规律 ↔ 随性
+  // 生活节奏 (Life Pace) - 规律 ↔ 随性 — 10 题
   { id: "lp1", dimension: "pace", dimensionLabel: "生活节奏", text: "你的日常生活更接近？", optionA: { label: "有相对固定的作息和安排", value: 0 }, optionB: { label: "比较灵活，看当天的心情和状态", value: 2 } },
   { id: "lp2", dimension: "pace", dimensionLabel: "生活节奏", text: "旅行时，你更喜欢？", optionA: { label: "提前做好详细计划", value: 0 }, optionB: { label: "只定大方向，到了再随机应变", value: 2 } },
   { id: "lp3", dimension: "pace", dimensionLabel: "生活节奏", text: "关于家务和生活琐事，你更倾向于？", optionA: { label: "按固定的节奏处理，保持整洁有序", value: 0 }, optionB: { label: "有空再处理，不太拘泥于固定模式", value: 2 } },
+  { id: "lp4", dimension: "pace", dimensionLabel: "生活节奏", text: "吃饭这件事，你更习惯？", optionA: { label: "尽量按时吃饭，有固定的饮食习惯", value: 0 }, optionB: { label: "饿了就吃，不严格讲究时间", value: 2 } },
+  { id: "lp5", dimension: "pace", dimensionLabel: "生活节奏", text: "你的物品整理风格更接近？", optionA: { label: "东西有固定位置，定期收拾", value: 0 }, optionB: { label: "看似随意但自己知道在哪，比较随性", value: 2 } },
+  { id: "lp6", dimension: "pace", dimensionLabel: "生活节奏", text: "对于节假日的安排，你更倾向于？", optionA: { label: "提前规划好行程和活动", value: 0 }, optionB: { label: "看心情和天气临时决定", value: 2 } },
+  { id: "lp7", dimension: "pace", dimensionLabel: "生活节奏", text: "你对待日程表的态度是？", optionA: { label: "喜欢把每天安排得井井有条", value: 0 }, optionB: { label: "日程表是参考，随时可以调整", value: 2 } },
+  { id: "lp8", dimension: "pace", dimensionLabel: "生活节奏", text: "如果突然有一个新的活动邀请，你通常会？", optionA: { label: "先看看和已有安排有没有冲突", value: 0 }, optionB: { label: "感兴趣就去，其他事可以往后排", value: 2 } },
+  { id: "lp9", dimension: "pace", dimensionLabel: "生活节奏", text: "你更认同哪种生活态度？", optionA: { label: "稳定的节奏带来安全感", value: 0 }, optionB: { label: "灵活应变才有生活的乐趣", value: 2 } },
+  { id: "lp10", dimension: "pace", dimensionLabel: "生活节奏", text: "关于花钱，你更接近？", optionA: { label: "有预算和规划，量入为出", value: 0 }, optionB: { label: "比较随心，喜欢就买", value: 2 } },
 
-  // 决策风格 (Decision Style) - 理性 ↔ 感性
+  // 决策风格 (Decision Style) - 理性 ↔ 感性 — 10 题
   { id: "ds1", dimension: "decision", dimensionLabel: "决策风格", text: "做重要决定时，你更看重？", optionA: { label: "利弊分析和客观条件", value: 0 }, optionB: { label: "内心的感受和直觉", value: 2 } },
   { id: "ds2", dimension: "decision", dimensionLabel: "决策风格", text: "选择一份工作，你更在意？", optionA: { label: "发展前景和实际待遇", value: 0 }, optionB: { label: "是否真心喜欢、做起来开心", value: 2 } },
   { id: "ds3", dimension: "decision", dimensionLabel: "决策风格", text: "朋友向你倾诉烦恼时，你更常？", optionA: { label: "帮 TA 分析问题，想办法解决", value: 0 }, optionB: { label: "先陪 TA 感受情绪，让 TA 知道你懂", value: 2 } },
+  { id: "ds4", dimension: "decision", dimensionLabel: "决策风格", text: "选择居住地点时，你更看重？", optionA: { label: "交通便利、配套齐全等实际条件", value: 0 }, optionB: { label: "感觉对不对、周边环境舒不舒服", value: 2 } },
+  { id: "ds5", dimension: "decision", dimensionLabel: "决策风格", text: "面对一个选择困难的情况，你通常会？", optionA: { label: "列出优缺点，逐一比较", value: 0 }, optionB: { label: "听从内心，选让自己更舒服的", value: 2 } },
+  { id: "ds6", dimension: "decision", dimensionLabel: "决策风格", text: "你买东西时更接近？", optionA: { label: "先做功课、比较参数和性价比", value: 0 }, optionB: { label: "看到喜欢的就会心动，凭感觉买", value: 2 } },
+  { id: "ds7", dimension: "decision", dimensionLabel: "决策风格", text: "你对「规则」的态度更接近？", optionA: { label: "规则是必要的，可以保证公平", value: 0 }, optionB: { label: "规则可以灵活调整，要看具体情况", value: 2 } },
+  { id: "ds8", dimension: "decision", dimensionLabel: "决策风格", text: "别人说你「太理性了」或「太感性了」时，你更可能听到哪个？", optionA: { label: "「你好像总在想对错」", value: 0 }, optionB: { label: "「你很容易被打动」", value: 2 } },
+  { id: "ds9", dimension: "decision", dimensionLabel: "决策风格", text: "看完一部电影后，你更常讨论？", optionA: { label: "剧情逻辑、演员表现、拍摄手法", value: 0 }, optionB: { label: "哪个情节让自己感动或共鸣", value: 2 } },
+  { id: "ds10", dimension: "decision", dimensionLabel: "决策风格", text: "你在做决定后更常？", optionA: { label: "复盘分析，看自己的判断是否合理", value: 0 }, optionB: { label: "跟着感觉走，不太纠结对错", value: 2 } },
 
-  // 亲密模式 (Intimacy Mode) - 独立 ↔ 依赖
+  // 亲密模式 (Intimacy Mode) - 独立 ↔ 依赖 — 10 题
   { id: "im1", dimension: "intimacy", dimensionLabel: "亲密模式", text: "在亲密关系中，你更希望？", optionA: { label: "各自保有独立的空间和兴趣", value: 0 }, optionB: { label: "尽量多在一起，分享生活的方方面面", value: 2 } },
   { id: "im2", dimension: "intimacy", dimensionLabel: "亲密模式", text: "遇到困难时，你更倾向于？", optionA: { label: "先自己想办法解决", value: 0 }, optionB: { label: "第一时间和对方商量", value: 2 } },
   { id: "im3", dimension: "intimacy", dimensionLabel: "亲密模式", text: "你觉得理想的相处模式是？", optionA: { label: "相互支持但不过度依赖", value: 0 }, optionB: { label: "彼此紧密联结，共同面对一切", value: 2 } },
+  { id: "im4", dimension: "intimacy", dimensionLabel: "亲密模式", text: "你在关系中更需要？", optionA: { label: "属于自己的独处时间和空间", value: 0 }, optionB: { label: "更多的联系和互动", value: 2 } },
+  { id: "im5", dimension: "intimacy", dimensionLabel: "亲密模式", text: "对方出差或旅行几天，你更常？", optionA: { label: "享受自己的时间，各忙各的", value: 0 }, optionB: { label: "会有些想念，希望保持频繁联系", value: 2 } },
+  { id: "im6", dimension: "intimacy", dimensionLabel: "亲密模式", text: "你在做个人决定时（如换工作、搬家），你更倾向于？", optionA: { label: "自己先想清楚，再和对方分享", value: 0 }, optionB: { label: "从一开始就和对方一起讨论", value: 2 } },
+  { id: "im7", dimension: "intimacy", dimensionLabel: "亲密模式", text: "你认为两个人在一起最重要的是？", optionA: { label: "尊重彼此的独立性和个人成长", value: 0 }, optionB: { label: "有共同的生活目标和日常陪伴", value: 2 } },
+  { id: "im8", dimension: "intimacy", dimensionLabel: "亲密模式", text: "当你感到疲惫或低落时，你更需要？", optionA: { label: "一个人待一会儿，自己调整", value: 0 }, optionB: { label: "对方陪在身边，听你说话或什么都不说", value: 2 } },
+  { id: "im9", dimension: "intimacy", dimensionLabel: "亲密模式", text: "你觉得最让人安心的关系状态是？", optionA: { label: "知道对方在那里，各做各的事也舒服", value: 0 }, optionB: { label: "每天有固定的交流时间，分享彼此的生活", value: 2 } },
+  { id: "im10", dimension: "intimacy", dimensionLabel: "亲密模式", text: "如果和对方有不同意见，你更倾向于？", optionA: { label: "保留各自的想法，不必强求一致", value: 0 }, optionB: { label: "努力达成共识，两个人的步调要一致", value: 2 } },
 ] as const;
 
 export const personalityTypes = [
@@ -680,7 +714,7 @@ export const dailyTasks: readonly DailyTask[] = [
   { id: "complete_profile", label: "完善资料", description: "完成婚恋档案填写", points: 50, icon: "📝" },
   { id: "upload_photo", label: "上传照片", description: "上传至少一张个人照片", points: 30, icon: "📷" },
   { id: "first_greeting", label: "首次打招呼", description: "向心仪的人发送第一条消息", points: 20, icon: "👋" },
-  { id: "soul_test", label: "完成灵魂测试", description: "完成性格画像测试", points: 100, icon: "✨" },
+  { id: "soul_test", label: "完成性格缘分", description: "完成性格画像测试", points: 100, icon: "✨" },
   { id: "post_moment", label: "发布动态", description: "分享一条生活动态", points: 20, icon: "💬" },
 ] as const;
 

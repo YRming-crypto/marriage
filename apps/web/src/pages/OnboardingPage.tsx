@@ -592,7 +592,7 @@ export function OnboardingPage({ draftApi = defaultDraftApi }: { draftApi?: Onbo
     if (currentStep === 2 && !await requireUploadedPhoto()) return;
     if (currentStep === 4) {
       if (!allQuestionsAnswered) {
-        setAnswersMessage(`关系问答还差 ${remainingQuestionCount} 题，请完成全部 15 题后再提交档案。`);
+        setAnswersMessage(`关系问答还差 ${remainingQuestionCount} 题，请完成全部 ${currentQuestions.length} 题后再提交档案。`);
         return;
       }
       if (!await requireUploadedPhoto()) return;
@@ -795,28 +795,62 @@ function PhotosStep({ onPhotoCountChange }: { onPhotoCountChange: (count: number
     return () => { active = false; };
   }, [onPhotoCountChange]);
 
+  function normalizeFilenameForMime(filename: string, mimeType: string): string {
+    const extMap: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
+    const targetExt = extMap[mimeType];
+    if (!targetExt) return filename;
+    const currentExt = filename.split(".").at(-1)?.toLowerCase() ?? "";
+    const validExts: Record<string, string[]> = { "image/jpeg": ["jpg", "jpeg"], "image/png": ["png"], "image/webp": ["webp"] };
+    if (validExts[mimeType]?.includes(currentExt)) return filename;
+    const baseName = filename.includes(".") ? filename.slice(0, filename.lastIndexOf(".")) : filename;
+    return `${baseName}.${targetExt}`;
+  }
+
   async function onFile(file: File | undefined) {
     if (!file || uploadBusy) return;
-    if (!new Set(["image/jpeg", "image/png", "image/webp"]).has(file.type) || file.size > 8 * 1024 * 1024) {
-      setMessage("请选择不超过 8MB 的 JPG、PNG 或 WebP 照片。");
+    console.log("[Photo Upload] Step 1: File selected", { name: file.name, type: file.type, size: file.size });
+    if (!file.type.startsWith("image/")) {
+      setMessage("请选择图片文件。");
       return;
     }
     setUploadBusy(true);
     setMessage("");
     try {
+      console.log("[Photo Upload] Step 2: Reading file as dataURL...");
       const dataUrl = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result));
-        reader.onerror = () => reject(new Error("照片读取失败。"));
+        reader.onload = () => {
+          const result = String(reader.result);
+          console.log("[Photo Upload] Step 3: File read complete, dataURL length:", result.length, "prefix:", result.slice(0, 50));
+          resolve(result);
+        };
+        reader.onerror = () => {
+          console.error("[Photo Upload] Step 3: FileReader error", reader.error);
+          reject(new Error("照片读取失败。"));
+        };
         reader.readAsDataURL(file);
       });
-      const result = await uploadPhoto({ filename: file.name, mimeType: file.type as "image/jpeg" | "image/png" | "image/webp", sizeBytes: file.size, dataUrl });
+      // Normalize filename extension to match a supported MIME type
+      const safeFilename = normalizeFilenameForMime(file.name, file.type);
+      // Determine the actual MIME type to send - normalize to supported types
+      const mimeTypeMap: Record<string, string> = {
+        "image/jpeg": "image/jpeg", "image/jpg": "image/jpeg",
+        "image/png": "image/png",
+        "image/webp": "image/webp",
+      };
+      const sendMimeType = mimeTypeMap[file.type] || "image/jpeg";
+      const payload = { filename: safeFilename, mimeType: sendMimeType as "image/jpeg" | "image/png" | "image/webp", sizeBytes: file.size, dataUrl };
+      console.log("[Photo Upload] Step 4: Sending upload request", { filename: safeFilename, mimeType: sendMimeType, sizeBytes: file.size, dataUrlLength: dataUrl.length });
+      const result = await uploadPhoto(payload);
+      console.log("[Photo Upload] Step 5: Upload success", result);
       const next = [...photos, result.photo];
       setPhotos(next);
       onPhotoCountChange(next.length);
       setMessage("照片已上传，等待审核。");
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "照片上传失败，请稍后重试。");
+      console.error("[Photo Upload] Error:", error);
+      const msg = error instanceof Error ? error.message : "照片上传失败，请稍后重试。";
+      setMessage(msg);
     } finally {
       setUploadBusy(false);
     }
@@ -864,9 +898,9 @@ function PhotosStep({ onPhotoCountChange }: { onPhotoCountChange: (count: number
     <label className="photo-upload">
       <ImagePlus size={42} />
       <strong>{uploadBusy ? "正在上传..." : "选择一张清晰照片"}</strong>
-      <p>支持 JPG、PNG、WebP，单张不超过 8MB，最多 6 张。</p>
+      <p>支持常见图片格式（JPG、PNG、WebP 等），最多 6 张。</p>
       <span className="button button--soft">选择照片</span>
-      <input aria-label="选择照片" type="file" accept="image/jpeg,image/png,image/webp" disabled={uploadBusy || photos.length >= 6} onChange={(event) => { void onFile(event.target.files?.[0]); event.target.value = ""; }} />
+      <input aria-label="选择照片" type="file" accept="image/*" disabled={uploadBusy || photos.length >= 6} onChange={(event) => { void onFile(event.target.files?.[0]); event.target.value = ""; }} />
     </label>
     {photos.length ? <div className="onboarding-photo-list">{photos.map((photo) => {
       const settingPrimary = primaryBusyId === photo.id;
@@ -895,7 +929,7 @@ function PreferencesStep({ value, onChange }: { value: PreferencesDraft; onChang
 function QuestionsStep({ value, onChange }: { value: AnswersDraft; onChange: (question: string, value: string) => void }) {
   const questionCount = currentQuestions.length;
   const answeredCount = countAnsweredQuestions(value);
-  return <><StepIntro title="关系与生活问答" description="5 个主题，共 15 个问题。可以分组完成，真实回答没有标准答案。" time="约 12 分钟" /><div className="question-progress"><div><strong>全部 15 题（提交档案前必填）</strong><span>已回答 {answeredCount}/{questionCount} 题</span></div><div className="progress-track" role="progressbar" aria-label="AI 问答进度" aria-valuemin={0} aria-valuemax={questionCount} aria-valuenow={answeredCount} aria-valuetext={`已回答 ${answeredCount}/${questionCount} 题`}><span style={{ width: `${(answeredCount / questionCount) * 100}%` }} /></div></div><div className="question-groups">{questionGroups.map((group, groupIndex) => <fieldset key={group.title}><legend>{groupIndex + 1}. {group.title}</legend>{group.questions.map((question, index) => <label key={question}><span>{question}</span><textarea value={value[question] ?? ""} onChange={(event) => onChange(question, event.target.value)} placeholder={index === 0 ? "写下你的真实想法即可，不需要标准答案。" : "可以稍后回来继续填写。"} /></label>)}</fieldset>)}</div></>;
+  return <><StepIntro title="关系与生活问答" description={`${questionGroups.length} 个主题，共 ${questionCount} 个问题。可以分组完成，真实回答没有标准答案。`} time="约 12 分钟" /><div className="question-progress"><div><strong>全部 {questionCount} 题（提交档案前必填）</strong><span>已回答 {answeredCount}/{questionCount} 题</span></div><div className="progress-track" role="progressbar" aria-label="AI 问答进度" aria-valuemin={0} aria-valuemax={questionCount} aria-valuenow={answeredCount} aria-valuetext={`已回答 ${answeredCount}/${questionCount} 题`}><span style={{ width: `${(answeredCount / questionCount) * 100}%` }} /></div></div><div className="question-groups">{questionGroups.map((group, groupIndex) => <fieldset key={group.title}><legend>{groupIndex + 1}. {group.title}</legend>{group.questions.map((question, index) => <label key={question}><span>{question}</span><textarea value={value[question] ?? ""} onChange={(event) => onChange(question, event.target.value)} placeholder={index === 0 ? "写下你的真实想法即可，不需要标准答案。" : "可以稍后回来继续填写。"} /></label>)}</fieldset>)}</div></>;
 }
 
 function ReviewStep({ profile, preferences, answeredQuestionCount, photoCount }: { profile: ProfileDraft; preferences: PreferencesDraft; answeredQuestionCount: number; photoCount: number }) {

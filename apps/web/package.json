@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "predev": "npm run build --workspace @ai-marriage/shared",
-    "dev": "vite --host 127.0.0.1 --port 4183",
+    "dev": "vite --host 127.0.0.1 --port 4185",
     "prebuild": "npm run build --workspace @ai-marriage/shared",
     "build": "tsc -b && vite build",
     "pretest": "npm run build --workspace @ai-marriage/shared",
